@@ -24,6 +24,7 @@ describe("WebsitePageFrame Class test suite",  function() {
     it("Constructor test", function() {
 
         propertyFromatTest(this.websitePageFrame);
+        expect(this.websitePageFrame.getWebsiteUrlUniqueFragment()).toEqual("#websitePageFrame");
 
     });
 

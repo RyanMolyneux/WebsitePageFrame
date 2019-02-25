@@ -14,11 +14,8 @@ function createWindow() {
     var http = new Protocol("http");
     var https = new Protocol("https");
     var interceptorsInjectionScripts = [ new IframeMessageHandlerScript() ];
+    var electronWebsitePageFrame = new ElectronWebsitePageFrame();
 
-    var electronWebsitePageFrame = new ElectronWebsitePageFrame([
-          new ElectronNetworkRequestInterceptor(http, interceptorsInjectionScripts),
-          new ElectronNetworkRequestInterceptor(https, interceptorsInjectionScripts)
-    ]);
 
     electronWebsitePageFrame.setupProtocolInterceptors(session.defaultSession);
 

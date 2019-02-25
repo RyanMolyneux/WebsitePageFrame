@@ -3,4 +3,5 @@
  * these are not accessible from our scripts that we execute.
  */
 window.WebsitePageFrameClient = require("../../../src/client/website-page-frame-clients/WebsitePageFrameClient.js").WebsitePageFrameClient;
-window.Message = require("../../../src/client/messages/Message.js").Message;
+window.Action = require("../../../src/general/actions/Action.js").Action;
+window.Message = require("../../../src/general/messages/Message.js").Message;

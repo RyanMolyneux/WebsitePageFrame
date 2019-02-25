@@ -11,7 +11,7 @@ function getMockScriptsToBeInjected() {
 function getMockElectronNetworkRequestInterceptor() {
     var protocol = new Protocol("file");
     var scriptsToBeInjected = getMockScriptsToBeInjected();
-    return new ElectronNetworkRequestInterceptor(protocol, scriptsToBeInjected);
+    return new ElectronNetworkRequestInterceptor(protocol, "#websitePageFrame", scriptsToBeInjected);
 }
 
 function propertyFromatTest(electronNetworkRequestInterceptor) {
@@ -32,9 +32,9 @@ describe("ElectronNetworkRequestInterceptor Class test suite", function() {
     });
 
     it("Constructor test", function() {
-        var protocolComparingTo = new Protocol("file");
+        var electronNetworkRequestInterceptorToCompareTo = new ElectronNetworkRequestInterceptor(new Protocol("file"), "#websitePageFrame", []);
 
-        InterceptorSpec.propertyEqualityTest(this.electronNetworkRequestInterceptor, protocolComparingTo);
+        InterceptorSpec.propertyEqualityTest(this.electronNetworkRequestInterceptor, electronNetworkRequestInterceptorToCompareTo);
         expect(this.electronNetworkRequestInterceptor.getNetworkRequester()).not.toBe(null);
         propertyFromatTest(this.electronNetworkRequestInterceptor);
 

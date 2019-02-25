@@ -3,11 +3,11 @@ var NetworkRequestInterceptor = require("../../../../src/native/interceptors/Net
 var InterceptorSpec = require("./Interceptor-spec.js");
 
 function getMockNetworkRequestInterceptor() {
-    return new NetworkRequestInterceptor(new Protocol("ftp"), { name: "networkRequesterMockup"});
+    return new NetworkRequestInterceptor(new Protocol("ftp"), "text/html", "#websitePageFrame", { name: "networkRequesterMockup"});
 }
 
-function propertyEqualityTest(networkRequestInterceptor, networkRequesterMockup) {
-    expect(networkRequestInterceptor.getNetworkRequester().name).toEqual(networkRequesterMockup.name);
+function propertyEqualityTest(networkRequestInterceptor, networkRequestInterceptorToComparingTo) {
+    expect(networkRequestInterceptor.getNetworkRequester().name).toEqual(networkRequestInterceptorToComparingTo.getNetworkRequester().name);
 }
 
 describe("NetworkRequestInterceptor Class test suite", function() {
@@ -16,19 +16,25 @@ describe("NetworkRequestInterceptor Class test suite", function() {
     });
 
     it("Constructor test", function() {
-        var protocolComparingTo = new Protocol("ftp");
-        var networkRequesterComparingTo = { name: "networkRequesterMockup" };
+        var networkRequestInterceptorToCompareTo = new NetworkRequestInterceptor( new Protocol("ftp"),
+                                                                                    "text/html",
+                                                                                    "#websitePageFrame",
+                                                                                    { name: "networkRequesterMockup" })
 
-        InterceptorSpec.propertyEqualityTest(this.networkRequestInterceptor, protocolComparingTo);
-        propertyEqualityTest(this.networkRequestInterceptor, networkRequesterComparingTo);
+
+        InterceptorSpec.propertyEqualityTest(this.networkRequestInterceptor, networkRequestInterceptorToCompareTo);
+        propertyEqualityTest(this.networkRequestInterceptor, networkRequestInterceptorToCompareTo);
     });
 
     it("Mutators test", function() {
-        var networkRequesterComparingTo = { name: "networkRequesterMockupV2" };
+        var networkRequestInterceptorToCompareTo = new NetworkRequestInterceptor(new Protocol("ftp"),
+                                                                                   "text/html",
+                                                                                    "#websitePageFrame",
+                                                                                   { name: "networkRequesterMockupV2" });
 
-        this.networkRequestInterceptor.setNetworkRequester(networkRequesterComparingTo);
+        this.networkRequestInterceptor.setNetworkRequester(networkRequestInterceptorToCompareTo.getNetworkRequester());
 
-        propertyEqualityTest(this.networkRequestInterceptor, networkRequesterComparingTo);
+        propertyEqualityTest(this.networkRequestInterceptor, networkRequestInterceptorToCompareTo);
     });
 });
 

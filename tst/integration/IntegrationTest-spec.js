@@ -1,5 +1,6 @@
 var WebsitePageFrameClient = require("../../src/client/website-page-frame-clients/WebsitePageFrameClient.js").WebsitePageFrameClient;
-var Message = require("../../src/client/messages/Message.js");
+var Action = require("../../src/general/actions/Action.js");
+var Message = require("../../src/general/messages/Message.js");
 var spectron = require("spectron");
 var Application = require("spectron").Application;
 var electronPath = require("electron");
@@ -7,23 +8,30 @@ var path = require("path");
 
 function setupWindowWebsitePageFrameClient() {
 
-    var websitePageFrameClient = new WebsitePageFrameClient("videoWebsiteWindow", "https://docs.google.com/document/d/1N2sZt-_tTwG23VgC6BYESiaC6T9jjT1k1uiiCE3Ncbk/edit");
+    window.websitePageFrameClient = new WebsitePageFrameClient("videoWebsiteWindow", "http://localhost:8080/index.html");
 
-    websitePageFrameClient.loadPage();
-
-    window.addEventListener("message", function(event) {
-        document.getElementById(event.data.targetId).innerHTML = event.data.returnedText;
-    });
+    websitePageFrameClient.loadWindow();
 }
 
 describe("reel-website-page-frame Integration test", function() {
     beforeAll(function() {
         this.app = new Application({
-            path: electronPath,
-            args: [ path.join(__dirname, "main.js") ]
+           path: electronPath,
+           args: [ path.join(__dirname, "main.js") ],
+           env: {
+               ELECTRON_ENABLE_LOGGING: true,
+               ELECTRON_ENABLE_STACK_DUMPING: true,
+               NODE_ENV: "development"
+           },
+           chromeDriverLogPath: path.join(__dirname, "chromedriverlog.log"),
+           webdriverLogPath: path.join(__dirname, "webdriverlogs"),
+           webdriverOptions: {
+          }
         });
 
-        return this.app.start();
+        return this.app.start().then(() => {
+            return this.app.webContents.executeJavaScript(`(${setupWindowWebsitePageFrameClient})()`);
+        });
     });
 
     afterEach(function() {
@@ -33,23 +41,38 @@ describe("reel-website-page-frame Integration test", function() {
     });
 
     it("Iframe Integration Test.", function() {
-        this.app.webContents.executeJavaScript(`(${setupWindowWebsitePageFrameClient})()`);
+        return this.app.client.waitUntilWindowLoaded(10000)
+                              .execute(() => {
 
-        this.app.webContents.executeJavaScript(`(${function() {
+                                  var actionToBeInvoked = new Action([], [], function() {
 
-            var messageToIframeWindow = new Message(function() {
-               var headingToSendToParentWindow = document.getElementById("heading").innerHTML;
+                                      document.getElementById("heading").textContent = "HelloWorld";
+                                      postMessageDataReturned.headingChanged = "HelloWorld";
 
-               window.parent.postMessage("message", { targetId: "testOutput1", returnedText: headingToSendToParentWindow });
-            });
+                                  });
 
-            websitePageFrameClient.postMessage(messageToIframeWindow)
-        }})()`);
+                                  var messageToWebsitePageFrame = new Message(actionToBeInvoked);
 
-        this.app.webContents.executeJavaScript("document.getElementById('testOutput1')", function (headingChangedFromPostMessageCall) {
+                                  websitePageFrameClient.postMessage(messageToWebsitePageFrame);
 
-            assert(headingChangedFromPostMessageCall.length).not.toEqual(0);
-        });
+                              }).execute((websitePageFrame) => {
+
+                                   var websitePageFrameDocument = document.getElementById(websitePageFrameClient.getWindowElementId()).contentDocument;
+
+                                   var expectedData = {
+                                       "websitePageFrameElementChangedText": websitePageFrameDocument.getElementById("heading").textContent,
+                                       "postMessageDataReturned": websitePageFrameClient.getPostMessageDataReturned()
+                                   };
+
+                                   return expectedData;
+
+                              }).then((expectedData) => {
+                                 var expectedDataValue = expectedData.value;
+
+                                 expect(expectedDataValue.postMessageDataReturned.ping.toLowerCase()).toEqual("pong");
+                                 expect(expectedDataValue.postMessageDataReturned.headingChanged.toLowerCase()).toEqual("helloworld");
+                                 expect(expectedDataValue.websitePageFrameElementChangedText.toLowerCase()).toEqual("helloworld");
+
+                              });
     });
-
 });

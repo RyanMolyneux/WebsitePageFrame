@@ -7,7 +7,7 @@ Script.prototype.getScriptCode = function() {
 }
 
 Script.prototype.toHtmlElementString = function() {
-    return "<script>" + this._scriptCode + "</script>";
+    return "<script>(" + this._scriptCode + ")()</script>";
 }
 
 exports.Script = Script;

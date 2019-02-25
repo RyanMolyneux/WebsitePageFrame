@@ -1,10 +1,12 @@
 var NetworkRequestInterceptor = require("./NetworkRequestInterceptor.js").NetworkRequestInterceptor;
+var PassThrough = require('stream').PassThrough;
+var JSDOM = require("jsdom").JSDOM;
 var networkRequester = require("electron-fetch").default;
 
 
-function ElectronNetworkRequestInterceptor(protocol, scriptsToBeInjected) {
+function ElectronNetworkRequestInterceptor(protocol, pathFragmentIdentifierIntercepting, scriptsToBeInjected) {
 
-    NetworkRequestInterceptor.call(this, protocol, networkRequester);
+    NetworkRequestInterceptor.call(this, protocol, "text/html", pathFragmentIdentifierIntercepting, networkRequester);
 
     this._scriptsToBeInjected = scriptsToBeInjected;
 
@@ -21,51 +23,109 @@ ElectronNetworkRequestInterceptor.prototype.setScriptsToBeInjected = function(sc
     this._scriptsToBeInjected = scriptsToBeInjected;
 }
 
-ElectronNetworkRequestInterceptor.prototype.interceptProtocolRequest = function(request, callback) {
 
-    var requestOptions = {
-        headers: request.headers,
-        method: request.method,
-        referrer: request.referrer
-    };
-    var networkRequester = this.getNetworkRequester();
+ElectronNetworkRequestInterceptor.prototype._prepareResponseHeaders = function(responseHeadersUnprepared, headersToBeRemoved = []) {
 
-    if (false) {
+    var responseHeadersPrepared = {};
 
-    } else {
+    var unpreparedHeaderItrerator = responseHeadersUnprepared.keys();
 
-        networkRequester(request.url, requestOptions).then((response) => {
+    for (var currentHeader = "default-123"; currentHeader != null; currentHeader = unpreparedHeaderItrerator.next().value ) {
 
-            var headersToBeRemoved = [ "x-frame-options", "content-encoding", "x-requested-with" ];
-            var websitePageHtmlStream = response.body;
-            var websitePageResponseHeaders = response.headers;
+        if (  headersToBeRemoved.includes(currentHeader) != true && currentHeader != "default-123") {
 
-            websitePageHtml.push(websitePageHtml);
-
-            for (var i = 0; i < this._scriptsToBeInjected.length; i++) {
-                websitePageHtmlStream.push( this._scriptsToBeInjected[i].toHtmlScriptString() );
-            }
-
-            websitePageHtmlStream.push(null);
-
-            for (var i = 0; i < headersToBeRemoved.length; i++) {
-                if ( websitePageResponseHeaders.has(headersToBeRemoved[i]) ) {
-                    websitePageResponseHeaders.delete(headersToBeRemoved);
-                }
-            }
-
-            callback({
-                statusCode: response.statusCode,
-                headers: websitePageResponseHeaders,
-                data: websitePageHtmlStream
-            });
-
-      }).catch(function(errorOccured) {
-          throw new Error("Error has occured")
-      });
+            responseHeadersPrepared[currentHeader.toLowerCase()] =  responseHeadersUnprepared.get(currentHeader);
+        }
     }
 
 
+    return responseHeadersPrepared;
+
+}
+
+ElectronNetworkRequestInterceptor.prototype._injectScriptsToWebsiteHtmlPage = function(websiteHtmlPage) {
+
+    var websitePageDom = new JSDOM(websiteHtmlPage);
+
+    for (var i = 0; i < this._scriptsToBeInjected.length; i++) {
+        websitePageDom.window.document.body.innerHTML = this._scriptsToBeInjected[i].toHtmlElementString() + websitePageDom.window.document.body.innerHTML;
+    }
+
+    return websitePageDom.serialize();
+
+}
+
+ElectronNetworkRequestInterceptor.prototype.defaultRequestHandler = function(request, callback) {
+
+    request.then(function(response) {
+
+        var websiteResponseHeaders = this._prepareResponseHeaders(response.headers, [ "x-frame-options", "Access-Control-Allow-Origin", "content-encoding", "transfer-encoding"]);
+        websiteResponseHeaders["access-control-allow-origin"] = "*";
+        callback({
+             "statusCode": response.statusCode,
+             "headers": websiteResponseHeaders,
+             "data": response.body
+        });
+
+    }.bind(this));
+}
+
+ElectronNetworkRequestInterceptor.prototype.particularRequestHandler = function(request, callback) {
+
+    var websiteResponse;
+
+    request.then(function (response) {
+
+        websiteResponse = response;
+        return response.text();
+
+    }).then(function(websiteRequestHtml) {
+
+        var websitePageHtmlStream = new PassThrough();
+        var websiteResponseHeaders;
+
+        websiteResponseHeaders = this._prepareResponseHeaders(websiteResponse.headers, [ "x-frame-options", "content-encoding", "transfer-encoding"]);
+
+        if ( websiteResponse.headers.get("content-type").includes(this.getContentTypeIntercepting()) === true) {
+            websiteRequestHtml = this._injectScriptsToWebsiteHtmlPage(websiteRequestHtml);
+        }
+
+        websitePageHtmlStream.push(websiteRequestHtml);
+
+        callback({
+            statusCode: websiteResponse.status,
+            url: websiteResponse.url,
+            headers: websiteResponseHeaders,
+            data: websitePageHtmlStream,
+        });
+
+    }.bind(this)).catch(function(errorOccured) {
+        throw new Error(errorOccured);
+    })
+}
+
+ElectronNetworkRequestInterceptor.prototype.interceptProtocolRequest = function(request, callback) {
+
+
+    var requestOptions = {
+        headers: Object.assign(request.headers, { "Origin": request.url }),
+        method: request.method,
+        referrer: request.referrer,
+        body: null,
+        redirect: 'follow',
+        useElectronNet: true
+    };
+
+
+    var networkRequester = this.getNetworkRequester();
+    var websiteRequestPromise = networkRequester(request.url, requestOptions);
+
+
+    if ( request.url.includes(this.getPathFragmentIdentifierIntercepting()) != true) {
+        this.defaultRequestHandler(websiteRequestPromise, callback);
+    } else {
+        this.particularRequestHandler(websiteRequestPromise, callback);
+    }
 }
 
 ElectronNetworkRequestInterceptor.prototype.complete = function(hasErrorOccured) {

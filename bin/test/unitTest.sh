@@ -1,12 +1,12 @@
 #!/bin/bash
 
-CURRENT_DIRECTORY=$PWD
+UNIT_TEST_DIRECTORY="$PWD/tst/unit"
 
 echo "-------------------------"
 echo "|  UNIT TESTS STARTED   |"
 echo "-------------------------"
 
-jasmine --config="$CURRENT_DIRECTORY/tst/unit/jasmine.json"
+jasmine --config="$UNIT_TEST_DIRECTORY/jasmine.json"
 
 
 echo "-------------------------"
