@@ -37,12 +37,15 @@ http.createServer(function (request, response) {
     var pathname = url.parse(request.url).pathname;
 
     fs.readFile(pathname.substr(1), function(errorOcurred, data) {
+        
         if(errorOcurred) {
             serverLogger.error(errorOcurred);
             response.writeHead(404, config.defaultResponseHeaders);
+
         } else {
 
             response.writeHead(200, config.defaultResponseHeaders);
+
             response.write(data.toString());
         }
         response.end();

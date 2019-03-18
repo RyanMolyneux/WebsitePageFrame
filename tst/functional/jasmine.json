@@ -1,5 +1,5 @@
 {
-  "spec_dir": "tst/integration/",
+  "spec_dir": "tst/functional/",
   "spec_files": [
     "**/*[sS]pec.js"
   ],

@@ -1,12 +1,12 @@
 {
   "name": "reel-website-page-frame",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Component too remove restrictions on iframe & other child window html elements for native devive javascript & to communication between the client window & iframe/child window.",
   "main": "index.js",
   "scripts": {
     "unit-test": "./bin/test/unitTest.sh",
-    "integration-test": "./bin/test/integrationTest.sh",
-    "test": "npm run unit-test && npm run integration-test"
+    "functional-test": "./bin/test/functionalTest.sh",
+    "test": "npm run unit-test && npm run functional-test"
   },
   "keywords": [
     "electron",

@@ -2,7 +2,7 @@ var ElectronWebsitePageFrame = require("../../src/native/website-page-frames/Ele
 var ElectronNetworkRequestInterceptor = require("../../src/native/interceptors/ElectronNetworkRequestInterceptor.js").ElectronNetworkRequestInterceptor;
 var IframeMessageHandlerScript = require("../../src/native/scripts/IframeMessageHandlerScript.js").IframeMessageHandlerScript;
 var Protocol = require("../../src/native/protocols/Protocol.js").Protocol;
-const { app, session, BrowserWindow } = require("electron");
+const { app, session, protocol, BrowserWindow } = require("electron");
 let appWindow;
 
 function createWindow() {
@@ -17,6 +17,7 @@ function createWindow() {
     var electronWebsitePageFrame = new ElectronWebsitePageFrame();
 
 
+
     electronWebsitePageFrame.setupProtocolInterceptors(session.defaultSession);
 
 
@@ -24,5 +25,5 @@ function createWindow() {
         appWindow = null;
     });
 }
-
+protocol.registerStandardSchemes(["http", "https"]);
 app.on("ready", createWindow);
