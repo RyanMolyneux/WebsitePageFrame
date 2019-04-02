@@ -7,7 +7,7 @@
 ## Overview
 In page Iframe/webview intermediary that is used to intercept incoming page requests &amp; inject personal scripts into them & allow for cross parent - child iframe interaction no matter what the site.
 
-## Main Libaries
+## Main Libraries
 - client
 - native
 - general
