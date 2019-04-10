@@ -2,7 +2,7 @@
 
 ## TODO
 - review bug causing some sites not to load all their resources.
-- package for distribution using webpack.
+
 
 ## Overview
 In page Iframe/webview intermediary that is used to intercept incoming page requests &amp; inject personal scripts into them & allow for cross parent - child iframe interaction no matter what the site.
