@@ -3,6 +3,8 @@ function WebsitePageFrameClient(windowElementId, websiteUrl) {
     this._windowElementId = windowElementId;
     this._websiteUrl = websiteUrl;
     this._onLocationChangeDo = null;
+    this._onWindowLoadedDo = null;
+    this._onWindowLoadedDoIntervalId = null;
     this._postMessageDataReturned = null;
 };
 
@@ -24,21 +26,23 @@ WebsitePageFrameClient.prototype.setWebsiteUrl = function(websiteUrl) {
 
 WebsitePageFrameClient.prototype.getPostMessageDataReturned = function() {
     return this._postMessageDataReturned;
-}
+};
 
 WebsitePageFrameClient.prototype.setPostMessageDataReturned = function(postMessageDataReturned) {
     this._postMessageDataReturned = postMessageDataReturned;
-}
+};
 
 WebsitePageFrameClient.prototype.getOnLocationChangeDo = function() {
     return this._onLocationChangeDo;
-}
+};
 
 WebsitePageFrameClient.prototype.setOnLocationChangeDo = function(onLocationChangeDo) {
 
     var websitePageFrame = document.getElementById(this._windowElementId);
 
     if (websitePageFrame != null) {
+
+        websitePageFrame.removeEventListener("load", this._onWindowLoadedDo);
 
         this._onLocationChangeDo = onLocationChangeDo;
 
@@ -50,13 +54,42 @@ WebsitePageFrameClient.prototype.setOnLocationChangeDo = function(onLocationChan
 
     }
 
+};
+
+WebsitePageFrameClient.prototype.setOnWindowLoadedDo = function(onWindowLoadedDo, intervalCheckRate) {
+
+    if ( !(onWindowLoadedDo instanceof Function) ) {
+
+        throw new TypeError("WebsitePageFrameClient setOnWindowLoadedDo, arguement onWindowLoadedDo expected to be instanceof Function.");
+
+    } else if (typeof(intervalCheckRate) !== "number") {
+
+        throw new TypeError("WebsitePageFrameClient setOnWindowLoadedDo, arguement intervalCheckRate expected to be typeof 'number' but found " + (typeof(intervalCheckRate)));
+
+    } else {
+        this._onWindowLoadedDo = onWindowLoadedDo;
+        this._onWindowLoadedDoIntervalId = setInterval(function() {
+      
+            if (this.isWindowLoaded() === true) {
+
+              this._onWindowLoadedDo();
+              this._onWindowLoadedDo = null;
+              clearInterval(this._onWindowLoadedDoIntervalId);
+              this._onWindowLoadedDoIntervalId = null;
+
+            }
+
+        }.bind(this), intervalCheckRate);
+    }
 }
 
 
 WebsitePageFrameClient.prototype.isWindowLoaded = function() {
-    var result = false;
 
-    if (this.getPostMessageDataRetured() != null && this.getPostMessageDataReturned().ping === "pong") {
+    var result = false;
+    var websitePageFrame = document.getElementById(this._windowElementId);
+    console.log(websitePageFrame.contentDocument.readyState);
+    if (websitePageFrame != null && websitePageFrame.contentDocument.readyState === "complete") {
         result = true;
     }
 
@@ -66,10 +99,10 @@ WebsitePageFrameClient.prototype.isWindowLoaded = function() {
 
 WebsitePageFrameClient.prototype.loadWindow = function() {
 
-    var element = document.getElementById(this._windowElementId);
+    var websitePageFrame = document.getElementById(this._windowElementId);
 
-    if (element != null) {
-        element.setAttribute("src", this._websiteUrl + "#" + this._WEBSITE_URL_UNIQUE_FRAGMENT);
+    if (websitePageFrame != null) {
+        websitePageFrame.setAttribute("src", this._websiteUrl + "#" + this._WEBSITE_URL_UNIQUE_FRAGMENT);
 
         window.addEventListener("message", function(event) {
 

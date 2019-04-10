@@ -8,7 +8,7 @@ echo "----------------------------------------"
 
 echo "webpack is bundling client javascript..."
 
-webpack "$FUNCTIONAL_TEST_FOLDER/client/script.js" -o "$FUNCTIONAL_TEST_FOLDER/client/bundle.js"
+npm run client-build
 
 echo "--------------------------------"
 echo "| STARTING TEST WEBSITE SERVER |"
@@ -33,10 +33,3 @@ echo "-------------------------------"
 echo "| STOPPING TEST WEBSITE SERVER |"
 echo "-------------------------------"
 kill $NODE_TEST_WEBSITE_PID
-
-echo "---------------------------------------"
-echo "| REMOVING FUNCTIONAL TEST RESOURCES |"
-echo "---------------------------------------"
-
-echo "removing bundled client javascript...";
-rm "$FUNCTIONAL_TEST_FOLDER/client/bundle.js";

@@ -92,6 +92,8 @@ ElectronNetworkRequestInterceptor.prototype.particularRequestHandler = function(
 
         websitePageHtmlStream.push(websiteRequestHtml);
 
+        websitePageHtmlStream.push(null);
+
         callback({
             statusCode: websiteResponse.status,
             url: websiteResponse.url,

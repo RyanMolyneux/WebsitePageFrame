@@ -8,7 +8,7 @@ var path = require("path");
 
 function setupWindowWebsitePageFrameClient() {
 
-    window.websitePageFrameClient = new WebsitePageFrameClient("videoWebsiteWindow", "http://localhost:8080/index.html");
+    window.websitePageFrameClient = new reelWebsitePageFrame.WebsitePageFrameClient("videoWebsiteWindow", "http://localhost:8080/index.html");
 
     websitePageFrameClient.loadWindow();
 }
@@ -59,7 +59,7 @@ describe("WebsitePageFrame Functional Test", function() {
 
     afterEach(function() {
         if (this.app.isRunning()) {
-            return this.app.stop();
+            //return this.app.stop();
         }
     });
 
@@ -67,14 +67,14 @@ describe("WebsitePageFrame Functional Test", function() {
 
         return this.app.client.waitUntil(waitUntilIframeLoaded.bind(this), 12500).execute(() => {
 
-            var actionToBeInvoked = new Action([], [], function() {
+            var actionToBeInvoked = new reelWebsitePageFrame.Action([], [], function() {
 
                 document.getElementById("heading").textContent = "HelloWorld";
                 postMessageDataReturned.headingChanged = "HelloWorld";
 
             });
 
-            var messageToWebsitePageFrame = new Message(actionToBeInvoked);
+            var messageToWebsitePageFrame = new reelWebsitePageFrame.Message(actionToBeInvoked);
 
             websitePageFrameClient.postMessage(messageToWebsitePageFrame);
 
