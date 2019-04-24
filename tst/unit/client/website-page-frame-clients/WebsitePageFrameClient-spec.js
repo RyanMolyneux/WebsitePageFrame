@@ -14,7 +14,6 @@ describe("WebsitePageFrameClient Class test suite", function() {
 
         expect(this.websitePageFrameClient.getWindowElementId()).toEqual("videoWebsiteIframe");
         expect(this.websitePageFrameClient.getWebsiteUrl()).toEqual("https://www.froogle-video.com");
-        expect(this.websitePageFrameClient.getOnLocationChangeDo()).toBe(null);
 
     });
 
@@ -27,12 +26,6 @@ describe("WebsitePageFrameClient Class test suite", function() {
 
         expect(this.websitePageFrameClient.getWindowElementId()).toEqual(windowElementIdComparingTo);
         expect(this.websitePageFrameClient.getWebsiteUrl()).toEqual(websiteUrlComparingTo);
-
-        expect(function () {
-
-            this.websitePageFrameClient.setOnLocationChangeDo(function() {})
-
-        }).toThrowError();
 
 
     });

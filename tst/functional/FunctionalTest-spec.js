@@ -32,9 +32,8 @@ function getMockSpectronApp () {
 
 async function waitUntilIframeLoaded() {
 
-
-    var isIframeLoaded = await this.app.client.execute(() => {
-        return (document.getElementById("videoWebsiteWindow").contentWindow.origin === "http://localhost:8080");
+    var isIframeLoaded = await this.app.client.execute(function() {
+        return websitePageFrameClient.isWindowLoaded();
     });
 
     return isIframeLoaded;
@@ -59,13 +58,13 @@ describe("WebsitePageFrame Functional Test", function() {
 
     afterEach(function() {
         if (this.app.isRunning()) {
-            //return this.app.stop();
+            return this.app.stop();
         }
     });
 
     it("PostMessage Test", function() {
 
-        return this.app.client.waitUntil(waitUntilIframeLoaded.bind(this), 12500).execute(() => {
+        return this.app.client.waitUntil(waitUntilIframeLoaded.bind(this), 12500, "", 2000).execute(() => {
 
             var actionToBeInvoked = new reelWebsitePageFrame.Action([], [], function() {
 

@@ -21,6 +21,7 @@ var scriptCode = function() {
     }
 
     window.addEventListener("message", messageHandler);
+
 };
 
 function IframeMessageHandlerScript() {

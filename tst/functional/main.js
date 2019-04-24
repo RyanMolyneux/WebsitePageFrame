@@ -11,9 +11,7 @@ function createWindow() {
     appWindow.loadFile(`${__dirname}/client/index.html`);
 
 
-    var http = new Protocol("http");
-    var https = new Protocol("https");
-    var interceptorsInjectionScripts = [ new IframeMessageHandlerScript() ];
+
     var electronWebsitePageFrame = new ElectronWebsitePageFrame();
 
 
@@ -25,5 +23,4 @@ function createWindow() {
         appWindow = null;
     });
 }
-protocol.registerStandardSchemes(["http", "https"]);
 app.on("ready", createWindow);

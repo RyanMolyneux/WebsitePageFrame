@@ -59,8 +59,8 @@ ElectronNetworkRequestInterceptor.prototype.defaultRequestHandler = function(req
 
     request.then(function(response) {
 
-        var websiteResponseHeaders = this._prepareResponseHeaders(response.headers, [ "x-frame-options", "Access-Control-Allow-Origin", "content-encoding", "transfer-encoding"]);
-        websiteResponseHeaders["access-control-allow-origin"] = "*";
+        var websiteResponseHeaders = this._prepareResponseHeaders(response.headers, [ "x-frame-options", "content-encoding", "transfer-encoding"]);
+
         callback({
              "statusCode": response.statusCode,
              "headers": websiteResponseHeaders,
@@ -84,7 +84,7 @@ ElectronNetworkRequestInterceptor.prototype.particularRequestHandler = function(
         var websitePageHtmlStream = new PassThrough();
         var websiteResponseHeaders;
 
-        websiteResponseHeaders = this._prepareResponseHeaders(websiteResponse.headers, [ "x-frame-options", "content-encoding", "transfer-encoding"]);
+        websiteResponseHeaders = this._prepareResponseHeaders(websiteResponse.headers, [ "x-frame-options", "Access-Control-Allow-Origin", "content-encoding", "transfer-encoding"]);
 
         if ( websiteResponse.headers.get("content-type").includes(this.getContentTypeIntercepting()) === true) {
             websiteRequestHtml = this._injectScriptsToWebsiteHtmlPage(websiteRequestHtml);
@@ -108,16 +108,14 @@ ElectronNetworkRequestInterceptor.prototype.particularRequestHandler = function(
 
 ElectronNetworkRequestInterceptor.prototype.interceptProtocolRequest = function(request, callback) {
 
-
     var requestOptions = {
-        headers: Object.assign(request.headers, { "Origin": request.url }),
+        headers: request.headers,
         method: request.method,
         referrer: request.referrer,
         body: null,
         redirect: 'follow',
         useElectronNet: true
     };
-
 
     var networkRequester = this.getNetworkRequester();
     var websiteRequestPromise = networkRequester(request.url, requestOptions);
