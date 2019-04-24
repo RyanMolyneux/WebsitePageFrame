@@ -1,6 +1,6 @@
 {
   "name": "reel-website-page-frame",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Component too remove restrictions on iframe & other child window html elements for native devive javascript & to communication between the client window & iframe/child window.",
   "main": "index-native.js",
   "scripts": {
