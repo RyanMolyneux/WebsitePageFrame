@@ -1,22 +1,22 @@
 var ElectronWebsitePageFrame = require("../../src/native/website-page-frames/ElectronWebsitePageFrame.js").ElectronWebsitePageFrame;
-var ElectronNetworkRequestInterceptor = require("../../src/native/interceptors/ElectronNetworkRequestInterceptor.js").ElectronNetworkRequestInterceptor;
-var IframeMessageHandlerScript = require("../../src/native/scripts/IframeMessageHandlerScript.js").IframeMessageHandlerScript;
-var Protocol = require("../../src/native/protocols/Protocol.js").Protocol;
 const { app, session, protocol, BrowserWindow } = require("electron");
 let appWindow;
 
 function createWindow() {
-    appWindow = new BrowserWindow({ width: 800, height: 600 });
+    appWindow = new BrowserWindow({ width: 800,
+                                    height: 600,
+                                    webPreferences: {
+                                        nodeIntegration: true
+                                    }
+                                  });
 
-    appWindow.loadFile(`${__dirname}/client/index.html`);
+    appWindow.loadFile(`${__dirname}/index.html`);
 
 
 
     var electronWebsitePageFrame = new ElectronWebsitePageFrame();
 
-
-
-    electronWebsitePageFrame.setupProtocolInterceptors(session.defaultSession);
+    electronWebsitePageFrame.setupProtocolInterceptors();
 
 
     appWindow.on("closed", () => {

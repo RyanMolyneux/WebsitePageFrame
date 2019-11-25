@@ -10,14 +10,24 @@ describe("Protocol Class unit test suite", function() {
     });
 
     it("Constructor test", function() {
+
         expect(this.protocol.getScheme()).toEqual("http");
+
     });
 
     it("Mutators test", function() {
-        let schemeToCompareTo = "udp";
+
+        var schemeToCompareTo = "udp";
+        var schemeToErrorCheckWith = 2;
 
         this.protocol.setScheme(schemeToCompareTo);
 
         expect(this.protocol.getScheme()).toEqual(schemeToCompareTo);
+        expect(function() {
+
+            this.protocol.setScheme(schemeToErrorCheckWith);
+
+        }.bind(this)).toThrowError();
+
     });
 });

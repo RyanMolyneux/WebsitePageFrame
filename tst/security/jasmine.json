@@ -1,0 +1,8 @@
+{
+   "spec_dir": "tst/security/",
+   "spec_files": [ "**/*-spec.js" ],
+   "helpers": [ "../helpers/**/*.js" ],
+   "stopSpecOnExpectationFailure": true,
+   "random": false
+
+}

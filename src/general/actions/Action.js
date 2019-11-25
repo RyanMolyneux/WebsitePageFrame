@@ -20,26 +20,26 @@ function setActionBody(actionBody) {
 
 function Action(actionParameters, actionArguements, actionBody) {
 
-    this._actionParameters;
-    this._actionArguements;
-    this._actionBody;
+    this._actionParameters = null;
+    this._actionArguements = null;
+    this._actionBody = null;
 
 
-    if (actionParameters == undefined) {
+    if (actionParameters ==  null) {
         actionParameters = [];
     }
 
-    if (actionArguements == undefined) {
+    if (actionArguements == null) {
         actionArguements = [];
     }
 
-    if (actionBody == undefined) {
+    if (actionBody == null) {
         actionBody = function() {};
     }
 
-    setActionParameters.call(this, actionParameters);
-    setActionArguements.call(this, actionArguements);
-    setActionBody.call(this, actionBody);
+    this.setActionParameters(actionParameters);
+    this.setActionArguements(actionArguements);
+    this.setActionBody(actionBody);
 
 }
 

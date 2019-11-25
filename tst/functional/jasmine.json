@@ -1,10 +1,10 @@
 {
   "spec_dir": "tst/functional/",
   "spec_files": [
-    "**/*[sS]pec.js"
+    "**/*-spec.js"
   ],
   "helpers": [
-    "helpers/**/*.js"
+    "../helpers/**/*.js"
   ],
   "stopSpecOnExpectationFailure": true,
   "random": false

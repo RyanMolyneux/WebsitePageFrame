@@ -1,32 +1,36 @@
-function Interceptor(protocol, contentTypeIntercepting, pathFragmentIdentifierIntercepting) {
-    this._protocol = protocol;
-    this._contentTypeIntercepting = contentTypeIntercepting
-    this._pathFragmentIdentifierIntercepting = pathFragmentIdentifierIntercepting;
+var Protocol = require("../protocols/Protocol.js").Protocol;
+
+function Interceptor(protocol) {
+
+    this._protocol = null;
+
+    this.setProtocol(protocol);
 }
 
 Interceptor.prototype.getProtocol = function() {
+
     return this._protocol;
+
 };
 
 Interceptor.prototype.setProtocol = function(protocol) {
-    this._protocol = protocol;
+
+    if ( !(protocol instanceof Protocol) ) {
+
+        throw new TypeError("Interceptor setProtocol, expected parameter protocol to be instanceof Protocol.");
+
+    } else {
+
+        this._protocol = protocol;
+
+    }
+
 };
 
-Interceptor.prototype.getContentTypeIntercepting = function() {
-    return this._contentTypeIntercepting;
-};
+Interceptor.prototype.interceptProtocolRequest = function() {
 
-Interceptor.prototype.setContentTypeIntercepting = function(contentTypeIntercepting) {
-    this._contentTypeIntercepting = contentTypeIntercepting;
-};
+    throw new Error("Interceptor interceptProtocolRequest, this method is abstract and must be overridden.");
 
-Interceptor.prototype.getPathFragmentIdentifierIntercepting =  function() {
-    return this._pathFragmentIdentifierIntercepting;
 };
-
-Interceptor.prototype.setPathFragmentIdentifierIntercepting = function(pathFragmentIdentifierIntercepting) {
-    this._pathFragmentIdentifierIntercepting = pathFragmentIdentifierIntercepting;
-};
-
 
 exports.Interceptor = Interceptor;

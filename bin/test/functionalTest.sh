@@ -14,7 +14,7 @@ echo "--------------------------------"
 echo "| STARTING TEST WEBSITE SERVER |"
 echo "--------------------------------"
 
-node "$FUNCTIONAL_TEST_FOLDER/test-website/startServer.js" "$FUNCTIONAL_TEST_FOLDER/test-website/" &
+node "$FUNCTIONAL_TEST_FOLDER/scenarios/nodeServer.js" "$FUNCTIONAL_TEST_FOLDER/scenarios/" &
 NODE_TEST_WEBSITE_PID=$!
 
 

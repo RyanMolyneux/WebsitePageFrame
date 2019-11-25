@@ -7,7 +7,18 @@ Protocol.prototype.getScheme = function() {
 }
 
 Protocol.prototype.setScheme = function(scheme) {
-    this._scheme = scheme;
+
+    if ( typeof(scheme) !== "string") {
+
+        throw new TypeError( "Protocol setScheme, expected scheme to be typeof string but found"
+                           + (typeof(scheme)) + ".");
+
+    } else {
+
+        this._scheme = scheme;
+        
+    }
+
 }
 
 exports.Protocol = Protocol;

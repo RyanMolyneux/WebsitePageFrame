@@ -1,41 +1,59 @@
-var Protocol = require("../../../../src/native/protocols/Protocol.js").Protocol;
 var NetworkRequestInterceptor = require("../../../../src/native/interceptors/NetworkRequestInterceptor.js").NetworkRequestInterceptor;
-var InterceptorSpec = require("./Interceptor-spec.js");
+var Interceptor = require("../../../../src/native/interceptors/Interceptor.js").Interceptor;
+var Protocol = require("../../../../src/native/protocols/Protocol.js").Protocol;
+var NetworkRequestHandler = require("../../../../src/native/network-request-handlers/NetworkRequestHandler.js").NetworkRequestHandler;
+var Cache = require("../../../../src/native/caches/Cache.js").Cache;
+var ResponsibilityChainBuilder = require("../../../../src/general/builders/ResponsibilityChainBuilder.js").ResponsibilityChainBuilder;
+
+
 
 function getMockNetworkRequestInterceptor() {
-    return new NetworkRequestInterceptor(new Protocol("ftp"), "text/html", "#websitePageFrame", { name: "networkRequesterMockup"});
+
+    var mockProtocolBeingIntercepted = new Protocol("ftp");
+    var mockNetworkRequester = { name: "MockNetworkRequester" };
+    var mockCache = new Cache();
+    var mockResponsibilityChainBuilder = new ResponsibilityChainBuilder();
+    var mockNetworkRequestHandler = new NetworkRequestHandler(mockNetworkRequester, mockCache, mockResponsibilityChainBuilder);
+
+    return new NetworkRequestInterceptor(mockProtocolBeingIntercepted, mockNetworkRequestHandler);
 }
 
 function propertyEqualityTest(networkRequestInterceptor, networkRequestInterceptorToComparingTo) {
-    expect(networkRequestInterceptor.getNetworkRequester().name).toEqual(networkRequestInterceptorToComparingTo.getNetworkRequester().name);
+
+    var newInterceptorsRequestHandlersRequestersName = networkRequestInterceptor.getNetworkRequestHandler().getNetworkRequester().name;
+    var interceptorRequestHandlerRequesterNameComparingTo = networkRequestInterceptorToComparingTo.getNetworkRequestHandler().getNetworkRequester().name;
+
+    expect(newInterceptorsRequestHandlersRequestersName).toBe(interceptorRequestHandlerRequesterNameComparingTo);
+
 }
 
 describe("NetworkRequestInterceptor Class test suite", function() {
+
     beforeEach(function() {
+
         this.networkRequestInterceptor = getMockNetworkRequestInterceptor();
+
     });
 
     it("Constructor test", function() {
-        var networkRequestInterceptorToCompareTo = new NetworkRequestInterceptor( new Protocol("ftp"),
-                                                                                    "text/html",
-                                                                                    "#websitePageFrame",
-                                                                                    { name: "networkRequesterMockup" })
 
+        expect(this.networkRequestInterceptor).toBeInstanceOf(Interceptor);
+        propertyEqualityTest(this.networkRequestInterceptor, getMockNetworkRequestInterceptor());
 
-        InterceptorSpec.propertyEqualityTest(this.networkRequestInterceptor, networkRequestInterceptorToCompareTo);
-        propertyEqualityTest(this.networkRequestInterceptor, networkRequestInterceptorToCompareTo);
     });
 
     it("Mutators test", function() {
-        var networkRequestInterceptorToCompareTo = new NetworkRequestInterceptor(new Protocol("ftp"),
-                                                                                   "text/html",
-                                                                                    "#websitePageFrame",
-                                                                                   { name: "networkRequesterMockupV2" });
 
-        this.networkRequestInterceptor.setNetworkRequester(networkRequestInterceptorToCompareTo.getNetworkRequester());
+        var networkRequestHandlerToCompareTo = new NetworkRequestHandler({ name: "NewMockNetworkRequester" });
 
-        propertyEqualityTest(this.networkRequestInterceptor, networkRequestInterceptorToCompareTo);
+        this.networkRequestInterceptor.setNetworkRequestHandler( networkRequestHandlerToCompareTo );
+
+        propertyEqualityTest(this.networkRequestInterceptor, new NetworkRequestInterceptor( new Protocol("udp"), networkRequestHandlerToCompareTo ) );
+        expect(function() {
+
+            this.networkRequestInterceptor.setNetworkRequestHandler(null);
+
+        }.bind(this)).toThrowError();
+
     });
 });
-
-exports.propertyEqualityTest = propertyEqualityTest;
