@@ -1,10 +1,10 @@
-# ReelWebsitePageFrame
+# WebsitePageFrame
 
 ## TODO
 - review current request intercepting solution to try refine & avoid doubling requests when location changes
 
 ## Overview
-In page Iframe/webview intermediary that is used to intercept incoming page requests &amp; inject personal scripts into them & allow for cross parent - child iframe interaction no matter what the site.
+In page browsing context intermediary that is used to intercept incoming page requests &amp; inject personal scripts into them & allow for cross parent-child browsing context communication.
 
 ## Main Libraries
 - client
