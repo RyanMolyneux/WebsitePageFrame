@@ -1,4 +1,4 @@
-# ReelWebsitePageFrame
+# WebsitePageFrame
 
 ## TODO
 - review current request intercepting solution to try refine & avoid doubling requests when location changes
