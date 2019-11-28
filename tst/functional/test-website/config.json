@@ -1,8 +1,0 @@
-{
-    "serverPort": 8080,
-    "defaultResponseHeaders": {
-        "Content-Type": "text/html; charset=utf-8",
-        "X-Frame-Options": "DENY"
-    }
-
-}
