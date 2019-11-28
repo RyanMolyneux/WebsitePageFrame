@@ -1,10 +1,16 @@
 # WebsitePageFrame
 
-## TODO
-- review current request intercepting solution to try refine & avoid doubling requests when location changes
+## Walkthrough
 
-## Overview
 In page browsing context intermediary that is used to intercept incoming page requests &amp; inject personal scripts into them & allow for cross parent-child browsing context communication.
+
+## Wanna Test The Library Prototype Out
+
+Simply clone a copy of the library to your local machine and add it as a dependency in your electron
+application or library, note a lot of changes are in the process of being made to library on the native
+side mostly before official release so expect their to be some changes.
+
+### THE MOST OF THE BELOW DOCUMENTATION IS OUT OF DATE SO DO NOT BOTHER READING AS OF LATEST COMMIT
 
 ## Main Libraries
 - client
@@ -39,4 +45,3 @@ this library contains code that can run either client or native side based on th
 #### Classes & Structure
 - Message
 - Action
-
