@@ -6,9 +6,67 @@ In page browsing context intermediary that is used to intercept incoming page re
 
 ## Wanna Test The Library Prototype Out
 
-Simply clone a copy of the library to your local machine and add it as a dependency in your electron
-application or library, note a lot of changes are in the process of being made to library on the native
-side mostly before official release so expect their to be some changes.
+### Steps
+
+1.) Download The repository.
+2.) Add the npm package as local dependency in your electron (electron is currently the only supported framework) App or Library.
+3.) In your electron main.js file add the below lines of code
+```
+
+    var ElectronWebsitePageFrame = require("website-page-frame").ElectronWebsitePageFrame;
+
+    ...
+
+    var electronWebsitePageFrame = new ElectronWebsitePageFrame();
+
+    electronWebsitePageFrame.setupProtocolInterceptors();
+
+```
+the above steps up the http/https request interceptors on your electron defaultSession
+the to intercept iframe/webview navigation and resource requests ensuring that the 
+cross origin pages can be displayed aswell communication parent-child capabilities are in place.
+```
+var ElectronWebsitePageFrame = require("website-page-frame").ElectronWebsitePageFrame;
+
+const { app, BrowserWindow } = require("electron");
+let appWindow;
+
+function createWindow() {
+    appWindow = new BrowserWindow({ width: 800,
+                                    height: 600,
+                                    webPreferences: {
+                                        nodeIntegration: true
+                                    }
+                                  });
+
+    appWindow.loadFile(`${__dirname}/index.html`);
+
+
+
+    var electronWebsitePageFrame = new ElectronWebsitePageFrame([]);
+
+    electronWebsitePageFrame.setupProtocolInterceptors();
+
+
+    appWindow.on("closed", () => {
+        appWindow = null;
+    });
+}
+
+app.on("ready", createWindow);
+
+```
+
+
+4.) As for this step I suggest you take a look into tst/functional folder to understand
+    how the setup and use of renderer/client-side libraries should go as it will help you
+    better understand the capabilities and limitations of this library.
+5.) Lastly Activate Node Integration.
+
+note: a lot of changes are in the process of being made to library on the native
+side mostly before official release so expect their to be some changes and remember
+this is currently a prototype and as such it's current state is not too reliable and
+these setup steps are not representative of the released version.
 
 # MOST OF THE BELOW DOCUMENTATION IS OUT OF DATE SO DO NOT BOTHER READING AS OF LATEST COMMIT
 
