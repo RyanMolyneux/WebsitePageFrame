@@ -2,12 +2,10 @@
 
 ## Walkthrough
 
-This library provides a currently nested browsing context(iframe/webview) intermediary which intercepts navigation & resource requests in order to inject scripts for parent-child communication & removing specific restrictions not allowing browsing-contexts to function especially in the case of iframe, apart from the communication aspect though their this library allows you to customize to the interceptors to your liking for example you may additional Task's to the ResponsibilityChainLinks of the NetworkRequestHandler that are already existent or event create your own ResponsibilityChainLinks.
+This library provides nested browsing context(iframe/webview) intermediary which intercepts navigation & resource requests in order to inject scripts for parent-child communication & removing specific restrictions not allowing browsing-contexts to function especially in the case of iframe.
 
-Note: additional information on what these are and how to use them will be provided upon official release of version 2.0, but for now test out the library using the steps below and if you find yourself intrested take a look at the code, but keep in mind its currently in the state of prototype only here to give people a first look.
+Note: additional information on all classes of this library will be documented upon official release of version 2.0, but for now test out the library using the steps below and if you find yourself intrested take a look at the code, but keep in mind its currently in the state of prototype only here to give people a first look.
 
-
-In page browsing context intermediary that is used to intercept incoming page requests &amp; inject personal scripts into them & allow for cross parent-child browsing context communication.
 
 ## Wanna Test The Library Prototype Out
 
