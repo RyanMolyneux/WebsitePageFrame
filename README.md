@@ -10,7 +10,7 @@ Simply clone a copy of the library to your local machine and add it as a depende
 application or library, note a lot of changes are in the process of being made to library on the native
 side mostly before official release so expect their to be some changes.
 
-### THE MOST OF THE BELOW DOCUMENTATION IS OUT OF DATE SO DO NOT BOTHER READING AS OF LATEST COMMIT
+# MOST OF THE BELOW DOCUMENTATION IS OUT OF DATE SO DO NOT BOTHER READING AS OF LATEST COMMIT
 
 ## Main Libraries
 - client
