@@ -86,7 +86,9 @@ app.on("ready", createWindow);
     how the setup and use of renderer/client-side libraries should go as it will help you
     better understand the capabilities and limitations of this library.
 
-6.) Lastly Activate Node Integration.
+6). Use client-build npm command to generate webpack bundle for client side/renderer classes.
+
+7.) Lastly Activate Node Integration.
 
 note: a lot of changes are in the process of being made to library on the native
 side mostly before official release so expect their to be some changes and remember
