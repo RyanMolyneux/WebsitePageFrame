@@ -2,6 +2,11 @@
 
 ## Walkthrough
 
+This library provides a currently nested browsing context(iframe/webview) intermediary which intercepts navigation & resource requests in order to inject scripts for parent-child communication & removing specific restrictions not allowing browsing-contexts to function especially in the case of iframe, apart from the communication aspect though their this library allows you to customize to the interceptors to your liking for example you may additional Task's to the ResponsibilityChainLinks of the NetworkRequestHandler that are already existent or event create your own ResponsibilityChainLinks.
+
+Note: additional information on what these are and how to use them will be provided upon official release of version 2.0, but for now test out the library using the steps below and if you find yourself intrested take a look at the code, but keep in mind its currently in the state of prototype only here to give people a first look.
+
+
 In page browsing context intermediary that is used to intercept incoming page requests &amp; inject personal scripts into them & allow for cross parent-child browsing context communication.
 
 ## Wanna Test The Library Prototype Out
@@ -59,13 +64,31 @@ function createWindow() {
 app.on("ready", createWindow);
 
 ```
+4.) Add one of the following nested browsing contexts to your electron App or Library.
+
+   ```
+   <iframe src=""></iframe>
+   ```
+   
+   or 
+   
+   ```
+   <webview src=""></webview>
+   ```
+   
+   if you are depending on whichever you use check the following reading material before
+   moving on, as this library provides benefits but you still must understand how to securely 
+   setup these page elements.
+   
+   4.1) iframe: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe, 
+        webview: https://electronjs.org/docs/api/webview-tag
 
 
-4.) As for this step I suggest you take a look into tst/functional folder to understand
+5.) As for this step I suggest you take a look into tst/functional folder to understand
     how the setup and use of renderer/client-side libraries should go as it will help you
     better understand the capabilities and limitations of this library.
 
-5.) Lastly Activate Node Integration.
+6.) Lastly Activate Node Integration.
 
 note: a lot of changes are in the process of being made to library on the native
 side mostly before official release so expect their to be some changes and remember
