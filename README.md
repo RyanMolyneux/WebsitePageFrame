@@ -9,7 +9,10 @@ In page browsing context intermediary that is used to intercept incoming page re
 ### Steps
 
 1.) Download The repository.
+  
 2.) Add the npm package as local dependency in your electron (electron is currently the only supported framework) App or Library.
+
+
 3.) In your electron main.js file add the below lines of code
 ```
 
@@ -61,6 +64,7 @@ app.on("ready", createWindow);
 4.) As for this step I suggest you take a look into tst/functional folder to understand
     how the setup and use of renderer/client-side libraries should go as it will help you
     better understand the capabilities and limitations of this library.
+
 5.) Lastly Activate Node Integration.
 
 note: a lot of changes are in the process of being made to library on the native
