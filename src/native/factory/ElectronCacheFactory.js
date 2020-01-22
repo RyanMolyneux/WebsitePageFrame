@@ -1,4 +1,4 @@
-var Cache = require("../caches/Cache.js").Cache;
+var Cache = require("../maps/Cache.js").Cache;
 var ipcMain = require("electron").ipcMain;
 
 function ElectronCacheFactory() {

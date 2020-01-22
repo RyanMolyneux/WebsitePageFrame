@@ -10,43 +10,23 @@ function AddFileSchemaToFrameAnscestorsChainLink() {
 AddFileSchemaToFrameAnscestorsChainLink.prototype = Object.create(ResponseModificationChainLink.prototype);
 AddFileSchemaToFrameAnscestorsChainLink.prototype.constructor = AddFileSchemaToFrameAnscestorsChainLink;
 
-AddFileSchemaToFrameAnscestorsChainLink.prototype.preformTask = function(response) {
+AddFileSchemaToFrameAnscestorsChainLink.prototype.preformTask = function(response, cache) {
 
     if ( response instanceof Response ) {
 
-        var modifiedCopyOfResponseHeaders = {};
-        var responseHeadersObjectKeys = Object.keys(response.getHeaders());
+        var contentSecurityPolicy = response.getHeaderMap().get("content-security-policy");
 
-        for (var i = 0; i < responseHeadersObjectKeys.length; i++) {
+        if ( contentSecurityPolicy !== undefined && contentSecurityPolicy.includes("frame-ancestors") ) {
 
-            if ( responseHeadersObjectKeys[i].toLowerCase() !== "content-security-policy" ) {
 
-                modifiedCopyOfResponseHeaders[ responseHeadersObjectKeys[i] ] = response.getHeaders()[ responseHeadersObjectKeys[i] ];
+                var contentSecurityPolicySplit = contentSecurityPolicy.split("frame-ancestors");
 
-            } else {
 
-                var contentSecurityPolicySplit = response.getHeaders()[ responseHeadersObjectKeys[i] ].split("frame-ancestors");
-                var contentSecurityPolicy = null;
-
-                if ( contentSecurityPolicySplit.length > 1 ) {
-
-                    contentSecurityPolicy =  contentSecurityPolicySplit[0]
-                                           + "frame-ancestors file://* "
-                                           + contentSecurityPolicySplit[1];
-
-                } else {
-
-                    contentSecurityPolicy = contentSecurityPolicySplit[0];
-
-                }
-
-                modifiedCopyOfResponseHeaders[ responseHeadersObjectKeys[i] ] = contentSecurityPolicy;
-
-            }
+                response.getHeaderMap().set("content-security-policy", contentSecurityPolicySplit[0]
+                                                                    + "frame-ancestors file://* "
+                                                                    + contentSecurityPolicySplit[1] );
 
         }
-
-        return new Response(modifiedCopyOfResponseHeaders, response.getBody(), response.getStatusCode());
 
     } else {
 

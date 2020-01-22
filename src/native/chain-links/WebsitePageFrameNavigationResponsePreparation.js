@@ -26,41 +26,34 @@ WebsitePageFrameNavigationResponsePreparation.prototype.constructor = WebsitePag
 
 WebsitePageFrameNavigationResponsePreparation.prototype.checkIfResponsible = function(request, response, cache) {
 
-    var requestUrlSplit = request.getUrl().split("/", 3);
-    var requestUrlWithoutPath = requestUrlSplit[0] + "//" + requestUrlSplit[2];
-    var requestSecFetchMode = request.getHeaders()["Sec-Fetch-Mode"];
     var isResponsible = false;
+    var contentType = response.getHeaderMap().get("content-type");
 
-    if ( request.getUrl().includes(this._WEBSITE_URL_UNIQUE_FRAGMENT)
-      && cache.retrieve("website-page-frame-origin") === undefined
-      && response.getStatusCode() !== 404 ) {
+    if ( (response.getStatusCode() === 200 || response.getStatusCode() === 404)
+      && contentType != undefined
+      && contentType.includes("text/html")) {
 
-        cache.store("website-page-frame-origin", requestUrlWithoutPath.replace("#websitePageFrame", ""));
-        isResponsible = true;
+        var requestUrlSplit = request.getUrl().split("/", 3);
+        var requestBaseUrl = requestUrlSplit[0] + "//" + requestUrlSplit[2];
+        var websitePageFrameCurrentOrigin = cache.get("website-page-frame-origin");
+        var requestSecFetchMode = request.getHeaderMap().get("Sec-Fetch-Mode");
 
-    } else if ( requestUrlWithoutPath === cache.retrieve("website-page-frame-origin")
-            && requestSecFetchMode === this._SEC_FETCH_MODE
-            && response.getStatusCode() !== 404) {
+        if ( request.getUrl().includes(this._WEBSITE_URL_UNIQUE_FRAGMENT)
+          && websitePageFrameCurrentOrigin === undefined ) {
 
-        isResponsible = true;
+            cache.set("website-page-frame-origin", requestBaseUrl.replace("#websitePageFrame", "") );
+            isResponsible = true;
+
+        } else if ( requestBaseUrl === websitePageFrameCurrentOrigin
+                && requestSecFetchMode === this._SEC_FETCH_MODE ) {
+
+            isResponsible = true;
+
+        }
 
     }
 
     return isResponsible;
-
-};
-
-WebsitePageFrameNavigationResponsePreparation.prototype.handleResponsibility = function(response, cache) {
-
-    var newModifiedCopyOfResponse = response;
-
-    for (var i = 0; i < this.getTaskChain().length; i++) {
-
-        newModifiedCopyOfResponse = this.getTaskChain()[i].preformTask(newModifiedCopyOfResponse);
-
-    }
-
-    return newModifiedCopyOfResponse;
 
 };
 

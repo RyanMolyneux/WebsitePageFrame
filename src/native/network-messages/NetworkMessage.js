@@ -1,29 +1,30 @@
-function NetworkMessage(headers, body) {
+var HeaderMap = require("../maps/HeaderMap.js").HeaderMap;
 
-    this._headers = null;
+function NetworkMessage(headerMap, body) {
+
+    this._headerMap = null;
     this._body = null;
 
-    this.setHeaders(headers);
+    this.setHeaderMap(headerMap);
     this.setBody(body);
-
 
 }
 
-NetworkMessage.prototype.getHeaders = function() {
+NetworkMessage.prototype.getHeaderMap = function() {
 
-    return this._headers;
+    return this._headerMap;
 
 };
 
-NetworkMessage.prototype.setHeaders = function(headers) {
+NetworkMessage.prototype.setHeaderMap = function(headerMap) {
 
-    if ( !(headers instanceof Object) ) {
+    if ( !(headerMap instanceof HeaderMap) ) {
 
-        throw new TypeError("NetworkMessage setHeaders, parameter headers expected to be instanceof Object.");
+        throw new TypeError("NetworkMessage setHeaderMap, parameter headerMap expected to be instanceof HeaderMap.");
 
     } else {
 
-        this._headers = headers;
+        this._headerMap = headerMap;
 
     }
 
@@ -37,15 +38,7 @@ NetworkMessage.prototype.getBody = function() {
 
 NetworkMessage.prototype.setBody = function(body) {
 
-    if ( typeof(body) !== "string" && body !== null ) {
-
-        throw new TypeError("NetworkMessage setBody, parameter body expected to be typeof string or to be null but found " + (typeof(body)) + ".");
-
-    } else {
-
-        this._body = body;
-
-    }
+    this._body = body;
 
 }
 

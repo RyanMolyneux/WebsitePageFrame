@@ -29,10 +29,10 @@ describe("WebsitePageFrameConnection Test Suite", function() {
 
     it("Connection Retry Thread stop after max retries Test", function() {
 
-        var iframeInitialURL = "http://localhost:8080/non/existant/route";
+        var iframeInitialURLOfNoneExistantWebsite = "http://localhost:7070/non/existant/websites/route";
         var connectionMaxRetries = 10;
 
-        return this.app.client.execute(this.setupWindowWebsitePageFrameClient, iframeInitialURL, null, null, connectionMaxRetries)
+        return this.app.client.execute(this.setupWindowWebsitePageFrameClient, iframeInitialURLOfNoneExistantWebsite, null, null, connectionMaxRetries)
                               .executeAsync(function(waitUntilMaxConnectionRetriesReachedJobFinished) {
 
                                   setTimeout(function() {

@@ -1,4 +1,5 @@
 var ResponseModificationChainLink = require("./ResponseModificationChainLink.js").ResponseModificationChainLink;
+var HeaderMap = require("../maps/HeaderMap.js").HeaderMap;
 var Response = require("../network-messages/Response.js").Response;
 
 function RemoveXFrameOptionsChainLink() {
@@ -10,24 +11,11 @@ function RemoveXFrameOptionsChainLink() {
 RemoveXFrameOptionsChainLink.prototype = Object.create(ResponseModificationChainLink.prototype);
 RemoveXFrameOptionsChainLink.prototype.constructor = RemoveXFrameOptionsChainLink;
 
-RemoveXFrameOptionsChainLink.prototype.preformTask = function(response) {
+RemoveXFrameOptionsChainLink.prototype.preformTask = function(response, cache) {
 
     if ( response instanceof Response ) {
 
-        var modifiedCopyOfResponseHeaders = {};
-        var responseHeadersObjectKeys = Object.keys(response.getHeaders());
-
-        for (var i = 0; i < responseHeadersObjectKeys.length; i++) {
-
-            if ( responseHeadersObjectKeys[i] !== "x-frame-options" && responseHeadersObjectKeys[i] !== "content-encoding") {
-
-                modifiedCopyOfResponseHeaders[ responseHeadersObjectKeys[i] ] = response.getHeaders()[ responseHeadersObjectKeys[i] ];
-
-            }
-
-        }
-
-        return new Response(modifiedCopyOfResponseHeaders, response.getBody(), response.getStatusCode());
+        response.getHeaderMap().remove("x-frame-options");
 
     } else {
 

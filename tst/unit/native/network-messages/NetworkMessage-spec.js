@@ -1,9 +1,14 @@
+var HeaderMap = require("../../../../src/native/maps/HeaderMap.js").HeaderMap;
 var NetworkMessage = require("../../../../src/native/network-messages/NetworkMessage.js").NetworkMessage;
 
 function getMockNetworkMessage() {
 
-    return new NetworkMessage( { "Content-Type": "text/html" },
-                               "<!DOCTYPE html> <html> <head> </head> <body> <h1> Hello World!!! </h1>  </body> </html>");
+    var headerMap = new HeaderMap();
+
+    headerMap.set("Content-Type", "text/html");
+
+    return new NetworkMessage( headerMap,
+                               { html: "<!DOCTYPE html> <html> <head> </head> <body> <h1> Hello World!!! </h1>  </body> </html>" });
 
 }
 
@@ -19,9 +24,10 @@ describe("NetworkMessage Class Test Suite", function() {
 
         var expectedContentTypeHeaderToCompareTo = "text/html";
 
-        expect(this.networkMessage.getHeaders()).toBeInstanceOf(Object);
-        expect(this.networkMessage.getHeaders()["Content-Type"]).toBe(expectedContentTypeHeaderToCompareTo);
-        expect(this.networkMessage.getBody()).toContain("Hello World");
+        expect(this.networkMessage.getHeaderMap()).toBeInstanceOf(HeaderMap);
+        expect(this.networkMessage.getHeaderMap().get("Content-Type")).toBe(expectedContentTypeHeaderToCompareTo);
+        expect(this.networkMessage.getBody()).toBeInstanceOf(Object);
+        expect(this.networkMessage.getBody()["html"]).toContain("Hello World");
 
 
     });
@@ -31,23 +37,18 @@ describe("NetworkMessage Class Test Suite", function() {
         var expectedAlteredContentTypeHeaderToCompareTo = "application/json";
         var expectedAlteredBodyToCompareTo = null;
 
-        this.networkMessage.setHeaders({ "Content-Type": expectedAlteredContentTypeHeaderToCompareTo });
+        this.networkMessage.getHeaderMap().set("Content-Type", expectedAlteredContentTypeHeaderToCompareTo);
         this.networkMessage.setBody(expectedAlteredBodyToCompareTo);
 
 
-        expect(this.networkMessage.getHeaders()["Content-Type"]).toBe(expectedAlteredContentTypeHeaderToCompareTo);
+        expect(this.networkMessage.getHeaderMap().get("Content-Type")).toBe(expectedAlteredContentTypeHeaderToCompareTo);
         expect(this.networkMessage.getBody()).toBeNull();
+
         expect(function() {
 
-            this.networkMessage.setHeaders(null);
+            this.networkMessage.setHeaderMap(null);
 
         }.bind(this));
-        expect(function() {
-
-            this.networkMessage.setBody(2);
-
-        }.bind(this));
-
 
     });
 

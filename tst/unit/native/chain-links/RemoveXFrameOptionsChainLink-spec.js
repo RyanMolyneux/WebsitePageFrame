@@ -1,3 +1,4 @@
+var HeaderMap = require("../../../../src/native/maps/HeaderMap.js").HeaderMap;
 var RemoveXFrameOptionsChainLink = require("../../../../src/native/chain-links/RemoveXFrameOptionsChainLink.js").RemoveXFrameOptionsChainLink;
 var ResponseModificationChainLink = require("../../../../src/native/chain-links/ResponseModificationChainLink.js").ResponseModificationChainLink;
 var Response = require("../../../../src/native/network-messages/Response.js").Response;
@@ -25,9 +26,15 @@ describe("RemoveXFrameOptionsChainLink Class Test Suite", function() {
 
     it("Preform Task Test", function() {
 
-        var expectedResponseToBeCopiedAndAltered = new Response({ "x-frame-options": "DENY" }, "", 200);
+        var headerMap = new HeaderMap();
 
-        expect( (this.removeXFrameHeaderChainLink.preformTask(expectedResponseToBeCopiedAndAltered)).getHeaders()["x-frame-options"] ).toBeUndefined();
+        headerMap.set("X-Frame-Options", "DENY")
+
+        var expectedResponseToBeAltered = new Response(headerMap, {}, 200);
+
+        this.removeXFrameHeaderChainLink.preformTask(expectedResponseToBeAltered);
+
+        expect( expectedResponseToBeAltered.getHeaderMap().get("x-frame-options") ).toBeUndefined();
 
     });
 

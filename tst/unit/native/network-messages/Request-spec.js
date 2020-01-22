@@ -1,9 +1,10 @@
+var HeaderMap = require("../../../../src/native/maps/HeaderMap.js").HeaderMap;
 var Request = require("../../../../src/native/network-messages/Request.js").Request;
 var NetworkMessage = require("../../../../src/native/network-messages/NetworkMessage.js").NetworkMessage;
 
 function getMockRequest() {
 
-    return new Request("https://localhost:8080", "GET", {}, "");
+    return new Request("https://localhost:8080", "GET", new HeaderMap(), {});
 
 }
 

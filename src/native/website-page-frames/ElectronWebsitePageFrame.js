@@ -25,13 +25,13 @@ function ElectronWebsitePageFrame(interceptors) {
                                                                                       defaultCache,
                                                                                       defaultResponsePreparationChainBuilder );
 
-        var defaultElectronHttpRequestInterceptor = new ElectronNetworkRequestInterceptor( new Protocol("http"),
-                                                                                           defaultElectronNetworkRequestHandler );
+        var defaultEmptyElectronHttpRequestInterceptor = new ElectronNetworkRequestInterceptor( new Protocol("http"),  
+                                                                                                new ElectronNetworkRequestHandler(session.defaultSession) );
 
         var defaultElectronHttpsRequestInterceptor = new ElectronNetworkRequestInterceptor( new Protocol("https"),
                                                                                             defaultElectronNetworkRequestHandler );
 
-        interceptors = [ defaultElectronHttpRequestInterceptor, defaultElectronHttpsRequestInterceptor ];
+        interceptors = [ defaultEmptyElectronHttpRequestInterceptor, defaultElectronHttpsRequestInterceptor ];
 
     }
 

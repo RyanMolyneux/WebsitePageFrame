@@ -1,8 +1,9 @@
 var WebsitePageFrameResourceResponsePreparation = require("../../../../src/native/chain-links/WebsitePageFrameResourceResponsePreparation.js").WebsitePageFrameResourceResponsePreparation;
 var ResponsePreparationChainLink = require("../../../../src/native/chain-links/ResponsePreparationChainLink.js").ResponsePreparationChainLink;
+var HeaderMap = require("../../../../src/native/maps/HeaderMap.js").HeaderMap;
 var Request = require("../../../../src/native/network-messages/Request.js").Request;
 var Response = require("../../../../src/native/network-messages/Response.js").Response;
-var Cache = require("../../../../src/native/caches/Cache.js").Cache;
+var Cache = require("../../../../src/native/maps/Cache.js").Cache;
 
 function getMockWebsitePageFrameResourceResponsePreparation() {
 
@@ -24,15 +25,20 @@ describe("WebsitePageFrameResourceResponsePreparation Class Test Suite", functio
 
     });
 
-    it("Check Is Responsible Test", function() {
+    it("Check If Responsible Test", function() {
 
-        var requestToTestWith = new Request( "https://www.google.com/home/index.html", "GET", { }, "");
-        var responseToTestWith = new Response( { "content-security-policy": "img-src *; frame-ancestors https://www.google.com; object-src *" },
-                                               "",
+        var requestToTestWith = new Request( "https://www.google.com/home/index.html", "GET", new HeaderMap(), {});
+        var responseToTestWithHeaderMap = new HeaderMap();
+
+        responseToTestWithHeaderMap.set("content-type", "text/html;");
+        responseToTestWithHeaderMap.set("content-security-policy", "img-src *; frame-ancestors https://www.google.com; object-src *");
+
+        var responseToTestWith = new Response( responseToTestWithHeaderMap,
+                                               {},
                                                200);
         var cacheToTestWith = new Cache();
 
-        cacheToTestWith.store("website-page-frame-origin", "https://www.google.com");
+        cacheToTestWith.set("website-page-frame-origin", "https://www.google.com");
 
         expect(this.websitePageFrameResourceResponsePreparation.checkIfResponsible( requestToTestWith,
                                                                                     responseToTestWith,
@@ -45,9 +51,12 @@ describe("WebsitePageFrameResourceResponsePreparation Class Test Suite", functio
                                                                                     cacheToTestWith)).toBe(true);
 
 
+        var responseHeaderMapToTestIsNotResponsibleWith = new HeaderMap()
 
-        expect(this.websitePageFrameResourceResponsePreparation.checkIfResponsible( new Request("https://www.facebook.com/home/index.html", "GET", {}, ""),
-                                                                                    new Response({ "content-security-policy": "frame-ancestors https://*.facebook.com"}, "", 200),
+        responseHeaderMapToTestIsNotResponsibleWith.set("content-security-policy", "frame-ancestors https://*.facebook.com");
+
+        expect(this.websitePageFrameResourceResponsePreparation.checkIfResponsible( new Request("https://www.facebook.com/home/index.html", "GET", new HeaderMap(), {}),
+                                                                                    new Response(responseHeaderMapToTestIsNotResponsibleWith, "", 200),
                                                                                     cacheToTestWith )).toBe(false);
 
     });

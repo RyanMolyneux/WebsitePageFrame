@@ -32,15 +32,5 @@ describe("ResponsePreparationChainLink Class Test Suite", function() {
 
     });
 
-    it("Handle If Responsible Test", function() {
-
-        expect(function() {
-
-            this.responsePreparationChainLink.handleIfResponsible();
-
-        }.bind(this)).toThrowError();
-
-    });
-
 
 });

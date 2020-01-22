@@ -34,23 +34,23 @@ WebsitePageFrame.prototype.setInterceptors = function(interceptors) {
 
 }
 
-WebsitePageFrame.prototype._checkIfEmptyOrContainsOnlyInterceptors = function(possiblePureInterceptorsArray) {
+WebsitePageFrame.prototype._checkIfEmptyOrContainsOnlyInterceptors = function(arrayToBeChecked) {
 
-    var containsOnlyInterceptors = true;
+    var isEmptyOrContainsOnlyInterceptors = true;
 
-    for (var i = 0; i < possiblePureInterceptorsArray.length; i++) {
+    for (var i = 0; i < arrayToBeChecked.length; i++) {
 
-        if ( !(possiblePureInterceptorsArray[i] instanceof Interceptor) ) {
+        if ( !(arrayToBeChecked[i] instanceof Interceptor) ) {
 
-            containsOnlyInterceptors = false;
+            isEmptyOrContainsOnlyInterceptors = false;
 
-            return containsOnlyInterceptors;
+            return isEmptyOrContainsOnlyInterceptors;
 
         }
 
     }
 
-    return containsOnlyInterceptors;
+    return isEmptyOrContainsOnlyInterceptors;
 
 };
 

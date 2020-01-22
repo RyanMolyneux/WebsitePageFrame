@@ -1,9 +1,10 @@
+var HeaderMap = require("../../../../src/native/maps/HeaderMap.js").HeaderMap;
 var Response = require("../../../../src/native/network-messages/Response.js").Response;
 var NetworkMessage = require("../../../../src/native/network-messages/NetworkMessage.js").NetworkMessage;
 
 function getMockResponse() {
 
-    return new Response({}, "", 200);
+    return new Response(new HeaderMap(), {}, 200);
 
 }
 

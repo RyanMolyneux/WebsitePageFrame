@@ -21,46 +21,40 @@ WebsitePageFrameResourceResponsePreparation.prototype.constructor = WebsitePageF
 
 WebsitePageFrameResourceResponsePreparation.prototype.checkIfResponsible = function(request, response, cache) {
 
-    var urlOfRequestSplit = request.getUrl().split("/", 3);
-    var urlOfRequest = urlOfRequestSplit[0] + "//" + urlOfRequestSplit[2];
-    var responseCspFrameAnscestors = null;
-
-    if (response.getHeaders()["content-security-policy"] !== undefined
-     && response.getHeaders()["content-security-policy"].includes("frame-ancestors")) {
-
-        responseCspFrameAnscestors = response.getHeaders()["content-security-policy"].split("frame-ancestors")[1];
-        responseCspFrameAnscestors = responseCspFrameAnscestors.split(";")[0];
-
-    }
-
     var isResponsible = false;
+    var contentType = response.getHeaderMap().get("content-type");
+
+    if ( (response.getStatusCode() === 200 || response.getStatusCode() === 404)
+      && contentType != undefined
+      && contentType.includes("text/html")) {
+
+        var requestUrlSplit = request.getUrl().split("/", 3);
+        var requestBaseUrl = requestUrlSplit[0] + "//" + requestUrlSplit[2];
+        var responseHeaderMap = response.getHeaderMap();
+        var responseCspFrameAnscestors = "";
+        var websitePageFrameCurrentOrigin = cache.get("website-page-frame-origin");
 
 
-    if ( urlOfRequest === cache.retrieve("website-page-frame-origin")
-      || cache.retrieve("website-page-frame-origin") !== undefined
-      && responseCspFrameAnscestors !== null
-      && responseCspFrameAnscestors.includes(cache.retrieve("website-page-frame-origin")) ) {
+        if ( responseHeaderMap.has("content-security-policy")
+          && responseHeaderMap.get("content-security-policy").includes("frame-ancestors")) {
 
-        isResponsible = true;
+            responseCspFrameAnscestors = responseHeaderMap.get("content-security-policy")
+                                                          .split("frame-ancestors")[1]
+                                                          .split(";")[0];
+        }
+
+        if ( websitePageFrameCurrentOrigin !== undefined
+          && requestBaseUrl === websitePageFrameCurrentOrigin
+          || responseCspFrameAnscestors.includes(websitePageFrameCurrentOrigin) ) {
+
+            isResponsible = true;
+
+        }
 
     }
 
     return isResponsible;
 
 }
-
-WebsitePageFrameResourceResponsePreparation.prototype.handleResponsibility = function(response, cache) {
-
-    var modifiedCopyOfResponse = response;
-
-    for (var i = 0; i < this.getTaskChain().length; i++) {
-
-        modifiedCopyOfResponse = this.getTaskChain()[i].preformTask(modifiedCopyOfResponse);
-
-    }
-
-    return modifiedCopyOfResponse;
-
-};
 
 exports.WebsitePageFrameResourceResponsePreparation = WebsitePageFrameResourceResponsePreparation;

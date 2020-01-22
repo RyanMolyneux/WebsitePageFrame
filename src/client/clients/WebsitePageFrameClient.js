@@ -86,9 +86,9 @@ WebsitePageFrameClient.prototype.sendMessage = function(message) {
         this._setPreviousMessageSignature(message.getMessageSignature());
         this.getClientConnection().getChildBrowsingContext().postMessage(message.toJsonFormat(), this.getClientConnection().getChildBrowsingContextCurrentOrigin());
 
-        setTimeout(function() {
+        setTimeout(function(currentMessageSentMessageSignature) {
 
-            if (this.getResponse() === null) {
+            if (this.getResponse() === null && (currentMessageSentMessageSignature === this.getPreviousMessageSignature()) ) {
 
                 this._setPreviousMessageSignature(null);
 
@@ -97,7 +97,7 @@ WebsitePageFrameClient.prototype.sendMessage = function(message) {
 
             }
 
-        }.bind(this), this.getResponseExpectedByTimeoutMilliseconds());
+        }.bind(this, this.getPreviousMessageSignature()), this.getResponseExpectedByTimeoutMilliseconds());
 
     } else {
 
@@ -109,7 +109,7 @@ WebsitePageFrameClient.prototype.sendMessage = function(message) {
 
 WebsitePageFrameClient.prototype.sendMessagePreChecks = function(message) {
 
-    return this.isConnectionReady() && this._previousMessageSignature === null && (message instanceof Message);
+    return (message instanceof Message) && this.isConnectionReady() && this._previousMessageSignature === null;
 
 };
 

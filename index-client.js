@@ -1,17 +1,39 @@
 var WebsitePageFrameClient = require("./src/client/clients/WebsitePageFrameClient.js").WebsitePageFrameClient;
+var WebsitePageFramePingClient = require("./src/client/clients/WebsitePageFramePingClient.js").WebsitePageFramePingClient;
+var Client = require("./src/general/clients/Client.js").Client;
 var WebsitePageFrameConnection = require("./src/client/connections/WebsitePageFrameConnection.js").WebsitePageFrameConnection;
+var Connection = require("./src/general/connections/Connection.js").Connection;
 var WebsitePageFrameMessageBuilder = require("./src/client/builders/WebsitePageFrameMessageBuilder.js").WebsitePageFrameMessageBuilder;
-var BrowserThread = require("./src/client/threads/BrowserThread.js").BrowserThread;
 var MessageBuilder = require("./src/general/builders/MessageBuilder.js").MessageBuilder;
+var ResponsibilityChainBuilder = require("./src/general/builders/ResponsibilityChainBuilder.js").ResponsibilityChainBuilder;
+var TaskChainBuilder = require("./src/general/builders/TaskChainBuilder.js").TaskChainBuilder;
+var ChainBuilder = require("./src/general/builders/ChainBuilder.js").ChainBuilder;
+var Builder = require("./src/general/builders/Builder.js").Builder;
+var BrowserThread = require("./src/client/threads/BrowserThread.js").BrowserThread;
+var Thread = require("./src/general/threads/Thread.js").Thread;
 var Message = require("./src/general/messages/Message.js").Message;
 var Action = require("./src/general/actions/Action.js").Action;
-
-
+var Map = require("./src/general/maps/Map.js").Map;
+var ResponsibilityChainLink = require("./src/general/chain-links/ResponsibilityChainLink.js").ResponsibilityChainLink;
+var TaskChainLink = require("./src/general/chain-links/TaskChainLink.js").TaskChainLink;
+var ChainLink = require("./src/general/chain-links/ChainLink.js").ChainLink;
 
 exports.WebsitePageFrameClient = WebsitePageFrameClient;
+exports.WebsitePageFramePingClient = WebsitePageFramePingClient;
+exports.Client = Client;
 exports.WebsitePageFrameConnection = WebsitePageFrameConnection;
+exports.Connection = Connection;
 exports.WebsitePageFrameMessageBuilder = WebsitePageFrameMessageBuilder;
-exports.BrowserThread = BrowserThread;
 exports.MessageBuilder = MessageBuilder;
+exports.ResponsibilityChainBuilder = ResponsibilityChainBuilder;
+exports.TaskChainBuilder = TaskChainBuilder;
+exports.ChainBuilder = ChainBuilder;
+exports.Builder = Builder;
+exports.BrowserThread = BrowserThread;
+exports.Thread = Thread;
 exports.Message = Message;
 exports.Action = Action;
+exports.Map = Map;
+exports.ResponsibilityChainLink = ResponsibilityChainLink;
+exports.TaskChainLink = TaskChainLink;
+exports.ChainLink = ChainLink;

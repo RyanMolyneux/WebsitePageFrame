@@ -2,7 +2,7 @@ var NetworkRequestInterceptor = require("../../../../src/native/interceptors/Net
 var Interceptor = require("../../../../src/native/interceptors/Interceptor.js").Interceptor;
 var Protocol = require("../../../../src/native/protocols/Protocol.js").Protocol;
 var NetworkRequestHandler = require("../../../../src/native/network-request-handlers/NetworkRequestHandler.js").NetworkRequestHandler;
-var Cache = require("../../../../src/native/caches/Cache.js").Cache;
+var Cache = require("../../../../src/native/maps/Cache.js").Cache;
 var ResponsibilityChainBuilder = require("../../../../src/general/builders/ResponsibilityChainBuilder.js").ResponsibilityChainBuilder;
 
 

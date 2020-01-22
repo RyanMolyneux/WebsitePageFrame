@@ -72,14 +72,14 @@ BrowserThread.prototype.constructor = BrowserThread;
 
 BrowserThread.prototype.start = function() {
 
-    if (this.getState() === this.POSSIBLE_STATES.STOPPED && this._getCodeExecutingIntervalId() === null) {
+    if ( this.getState() === this.POSSIBLE_STATES.STOPPED && this._getCodeExecutingIntervalId() === null) {
 
-        this._codeExecutingIntervalId = setInterval(this._getCodeToBeExecuted(), this.getCodeIsToBeExecutedEveryXMilliseconds());
+        this._setCodeExecutingIntervalId( setInterval(this._getCodeToBeExecuted(), this.getCodeIsToBeExecutedEveryXMilliseconds()) );
         this._setState(this.POSSIBLE_STATES.IS_RUNNING);
 
     } else {
 
-        throw new Error("BrowserThread start, thread is currently already running.");
+        throw new Error("BrowserThread start, thread is already in a running state.");
 
     }
 
@@ -87,15 +87,16 @@ BrowserThread.prototype.start = function() {
 
 BrowserThread.prototype.stop = function() {
 
-    if (this.getState() === this.POSSIBLE_STATES.IS_RUNNING && this._getCodeExecutingIntervalId() !== null) {
+    if ( this.getState() === this.POSSIBLE_STATES.IS_RUNNING ) {
 
         clearInterval( this._getCodeExecutingIntervalId() );
+
         this._setCodeExecutingIntervalId(null);
         this._setState(this.POSSIBLE_STATES.STOPPED);
 
     } else {
 
-        throw new Error("BrowserThread stop, thread is not currently running.");
+        throw new Error("BrowserThread stop, thread is already in a stopped state.");
 
     }
 

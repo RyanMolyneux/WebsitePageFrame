@@ -1,6 +1,8 @@
 var NetworkRequestHandler = require("./NetworkRequestHandler.js").NetworkRequestHandler;
+var HeaderMap = require("../maps/HeaderMap.js").HeaderMap;
 var Request = require("../network-messages/Request.js").Request;
 var Response = require("../network-messages/Response.js").Response;
+var PassThrough = require("stream").PassThrough;
 var electronFetch = require("electron-fetch").default;
 
 function ElectronNetworkRequestHandler(browserSession, cache, responsePreparationChainBuilder) {
@@ -20,47 +22,63 @@ ElectronNetworkRequestHandler.prototype.handleNetworkRequest = function(request)
 
     if ( request instanceof Request ) {
 
-         var requestResponse = null;
+        var response = null;
 
-        return this._attachSiteCookiesToRequestHeader(request).then(function() {
+        return this._addSiteCookiesToRequestHeaderMap(request).then(function() {
+
 
             return this.getNetworkRequester()(request.getUrl(), {
 
-              headers: request.getHeaders(),
-              method: request.getMethod()
+              headers: request.getHeaderMap().toObject(),
+              method: request.getMethod(),
+              body: request.getBody(),
+              timeout: 15000
 
             });
 
-        }.bind(this)).then(function(response) {
+        }.bind(this)).then(function(fetchResponse) {
 
-            requestResponse = new Response( this._formatResponseHeadersToObject(response.headers),
-                                            "",
-                                            response.status);
+            response = new Response( this._extractNetworkRequesterResponseHeadersToHeaderMap(fetchResponse.headers),
+                                            null,
+                                            fetchResponse.status);
 
-            return response.text();
+            if ( response.getHeaderMap().get("content-type").includes("text/html") ) {
 
-        }.bind(this)).then(function(responseBody) {
+                return fetchResponse.text();
 
-            requestResponse.setBody(responseBody);
+            } else {
 
-            for (var i = 0; i < this.getResponsePreparationChain().length; i++) {
-
-                var responsePreparationChainLink = this.getResponsePreparationChain()[i];
-
-                if ( responsePreparationChainLink.checkIfResponsible( request,
-                                                                      requestResponse,
-                                                                      this.getCache() ) ) {
-
-                    requestResponse = responsePreparationChainLink.handleResponsibility(requestResponse, this.getCache());
-                    i = this.getResponsePreparationChain().length;
-
-                }
+                return fetchResponse.body;
 
             }
 
-            return requestResponse;
+        }.bind(this)).then(function(responseBody) {
 
-        }.bind(this))
+            response.setBody(responseBody);
+
+            var responsePreparationChainLink = this._findResponsePreparationChainLink(request, response);
+
+            if (responsePreparationChainLink != undefined) {
+
+                responsePreparationChainLink.handleResponsibility(response, this.getCache());
+
+
+            }
+
+            if ( typeof(responseBody) === "string" ) {
+
+                var requestBodyAsStream = new PassThrough();
+
+                requestBodyAsStream.push(response.getBody());
+                requestBodyAsStream.push(null);
+
+                response.setBody(requestBodyAsStream);
+
+            }
+
+            return response;
+
+        }.bind(this));
 
 
     } else {
@@ -71,40 +89,45 @@ ElectronNetworkRequestHandler.prototype.handleNetworkRequest = function(request)
 
 };
 
-ElectronNetworkRequestHandler.prototype._attachSiteCookiesToRequestHeader = function(request) {
+ElectronNetworkRequestHandler.prototype._addSiteCookiesToRequestHeaderMap = function(request) {
 
+    var requestUrl = request.getUrl();
 
-
-    return this._browserSession.cookies.get({ url: request.getUrl() })
+    return this._browserSession.cookies.get({ url: requestUrl })
                                        .then(function(cookies) {
+
+
                                            var cookieHeaderField = "";
 
                                            for (var i = 0; i < cookies.length; i++) {
 
-                                               cookieHeaderField += (cookies[i].name + "=" + cookies[i].value + ";");
+                                               if ( requestUrl.includes("http://") ^ (cookies[i].secure || requestUrl.includes("https://") ) ) {
 
+                                                   request.getHeaderMap().append("Cookie", (cookies[i].name + "=" + cookies[i].value + ";"));
+
+                                               }
                                            }
 
-                                           request.getHeaders().Cookie = cookieHeaderField;
+
 
                                       }.bind(this));
 
 };
 
-ElectronNetworkRequestHandler.prototype._formatResponseHeadersToObject = function(responseHeaders) {
+ElectronNetworkRequestHandler.prototype._extractNetworkRequesterResponseHeadersToHeaderMap = function(responseHeaders) {
 
-    var responseHeadersFormated = {};
+    var responseHeaderMap = new HeaderMap();
     var headerItrerator = responseHeaders.keys();
     var currentHeaderKeyEntry = headerItrerator.next();
 
     while (!currentHeaderKeyEntry.done) {
 
-        responseHeadersFormated[currentHeaderKeyEntry.value.toLowerCase()] = responseHeaders.get(currentHeaderKeyEntry.value);
+        responseHeaderMap.append(currentHeaderKeyEntry.value, responseHeaders.get(currentHeaderKeyEntry.value));
 
         currentHeaderKeyEntry = headerItrerator.next();
     }
 
-    return responseHeadersFormated;
+    return responseHeaderMap;
 
 };
 

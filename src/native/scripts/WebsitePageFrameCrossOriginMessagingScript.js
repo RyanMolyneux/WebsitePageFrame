@@ -34,13 +34,4 @@ WebsitePageFrameCrossOriginMessagingScript.prototype = Object.create(Script.prot
 WebsitePageFrameCrossOriginMessagingScript.prototype.constructor = WebsitePageFrameCrossOriginMessagingScript;
 
 
-WebsitePageFrameCrossOriginMessagingScript.prototype.toHtmlElementString = function() {
-    return "<script>"
-           + "("
-               + this.getScriptCode()
-           + ")()"
-           + "</script>";
-};
-
-
 exports.WebsitePageFrameCrossOriginMessagingScript = WebsitePageFrameCrossOriginMessagingScript;

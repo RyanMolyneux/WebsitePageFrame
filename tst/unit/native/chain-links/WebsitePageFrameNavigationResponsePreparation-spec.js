@@ -1,8 +1,9 @@
 var WebsitePageFrameNavigationResponsePreparation = require("../../../../src/native/chain-links/WebsitePageFrameNavigationResponsePreparation.js").WebsitePageFrameNavigationResponsePreparation;
 var ResponsePreparationChainLink = require("../../../../src/native/chain-links/ResponsePreparationChainLink.js").ResponsePreparationChainLink;
+var HeaderMap = require("../../../../src/native/maps/HeaderMap.js").HeaderMap;
 var Request = require("../../../../src/native/network-messages/Request.js").Request;
 var Response = require("../../../../src/native/network-messages/Response.js").Response;
-var Cache = require("../../../../src/native/caches/Cache.js").Cache;
+var Cache = require("../../../../src/native/maps/Cache.js").Cache;
 
 
 function getMockWebsitePageFrameNavigationResponsePreparation() {
@@ -27,34 +28,50 @@ describe("WebsitePageFrameNavigationResponsePreparation Class Test Suite", funct
 
     it("Check If Responsible", function() {
 
+        var responsibleRequestHeaderMap = new HeaderMap();
+        var responseHeaderMap = new HeaderMap();
+
+
+        responsibleRequestHeaderMap.set("Origin", "https://www.google.com");
+        responsibleRequestHeaderMap.set("Sec-Fetch-Mode", "nested-navigate");
+
+        responseHeaderMap.set("Content-Type", "text/html");
+
         var responsibleRequestToTestWith = new Request( "https://www.google.com#websitePageFrame",
                                                         "GET",
-                                                        { origin: "https://www.google.com", "Sec-Fetch-Mode": "nested-navigate" },
-                                                        "");
+                                                        responsibleRequestHeaderMap,
+                                                        {});
+
+
+        var unresponsibleRequestHeaderMap = new HeaderMap();
+
+        unresponsibleRequestHeaderMap.set("origin", "https://www.facebook.com");
+        unresponsibleRequestHeaderMap.set("Sec-Fetch-Mode", "nested-navigate");
+
         var unresponsibleRequestToTestWith = new Request( "https://www.facebook.com",
                                                           "GET",
-                                                          { origin: "https://www.facebook.com", "Sec-Fetch-Mode": "nested-navigate" },
-                                                          "");
+                                                          unresponsibleRequestHeaderMap,
+                                                          {});
 
         var cacheToTestWith = new Cache();
 
         expect(this.websitePageFrameNavigationResponsePreparation.checkIfResponsible( responsibleRequestToTestWith,
-                                                                   new Response({}, "", 200),
+                                                                   new Response(responseHeaderMap, {}, 200),
                                                                    cacheToTestWith )).toBe(true);
 
         expect(this.websitePageFrameNavigationResponsePreparation.checkIfResponsible( unresponsibleRequestToTestWith,
-                                                                   new Response({}, "", 200),
+                                                                   new Response(responseHeaderMap, {}, 200),
                                                                    cacheToTestWith ) ).toBe(false);
 
 
 
-        expect(cacheToTestWith.retrieve("website-page-frame-origin")).toBe("https://www.google.com");
+        expect(cacheToTestWith.get("website-page-frame-origin")).toBe("https://www.google.com");
 
 
         responsibleRequestToTestWith.setUrl("https://www.google.com/about");
 
         expect(this.websitePageFrameNavigationResponsePreparation.checkIfResponsible( responsibleRequestToTestWith,
-                                                                   new Response({}, "", 200),
+                                                                   new Response(responseHeaderMap, "", 200),
                                                                    cacheToTestWith) ).toBe(true);
     });
 

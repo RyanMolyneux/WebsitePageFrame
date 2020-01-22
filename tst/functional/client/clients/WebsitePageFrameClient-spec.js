@@ -234,5 +234,71 @@ describe("WebsitePageFrameClient Functional Test Suite", function() {
                               });
     });
 
+    it("Test previous message sent response timeout does not block next message response", function() {
+
+        var iframeInitialURL = "http://localhost:8080/default/index.html";
+        var responseTimeoutMilliseconds = 4000;
+
+        return this.app.client.execute(this.setupWindowWebsitePageFrameClient, iframeInitialURL, null, responseTimeoutMilliseconds).executeAsync(this.waitUntilConnectionReady)
+                              .execute(function() {
+
+                                  var firstMessageActionToBeExecuted = new websitePageFrame.Action([], [], function() {});
+
+                                  window.messageBuilder = new websitePageFrame.WebsitePageFrameMessageBuilder();
+
+                                  messageBuilder.attachAction(firstMessageActionToBeExecuted);
+
+                                  websitePageFrameClient.sendMessage( messageBuilder.finishBuild() );
+
+
+
+                              }).executeAsync(function (finishedWaitingXSecondsToSendSecondMessage) {
+
+                                  var secondMessageActionToBeExecuted = new websitePageFrame.Action([], [], function() {
+
+                                      postMessageDataReturned.secondMessageValueExpected = 21;
+
+                                      var waitUntilFirstResponseTimeoutTriggered = ((new Date()).getSeconds() + 2);
+
+                                      console.log(waitUntilFirstResponseTimeoutTriggered);
+
+                                      while ( ((new Date()).getSeconds()) < waitUntilFirstResponseTimeoutTriggered);
+
+                                      console.log(postMessageDataReturned);
+
+                                  });
+
+
+                                  messageBuilder.attachAction(secondMessageActionToBeExecuted);
+
+                                  setTimeout(function() {
+
+                                      websitePageFrameClient.sendMessage( messageBuilder.finishBuild() );
+                                      finishedWaitingXSecondsToSendSecondMessage();
+
+                                  }.bind(this), 3000);
+
+                              }).executeAsync(function(waitUntilSecondMessageTimeout) {
+
+                                  setTimeout(function() {
+
+                                      waitUntilSecondMessageTimeout();
+
+                                  }.bind(this), 4000);
+
+                              }).execute(function() {
+
+                                  return this.websitePageFrameClient.getResponse();
+
+                              }).then(function(websitePageFrameClientResponse) {
+
+                                  var expectedSecondMessageResponse = websitePageFrameClientResponse.value;
+
+                                  expect(expectedSecondMessageResponse.secondMessageValueExpected).toBe(21);
+
+                             });
+
+    });
+
 
 });

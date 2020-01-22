@@ -1,4 +1,4 @@
-var Cache = require("../caches/Cache.js").Cache;
+var Cache = require("../maps/Cache.js").Cache;
 var ResponsibilityChainBuilder = require("../../general/builders/ResponsibilityChainBuilder.js").ResponsibilityChainBuilder;
 
 function NetworkRequestHandler(networkRequester, cache, responsePreparationChainBuilder) {

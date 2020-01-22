@@ -1,14 +1,14 @@
 {
-  "name": "reel-website-page-frame",
+  "name": "website-page-frame",
   "version": "1.0.0",
   "description": "Component too remove restrictions on iframe & other child window html elements for native devive javascript & to communication between the client window & iframe/child window.",
   "main": "index-native.js",
   "scripts": {
-    "client-build": "webpack --config reel-website-page-frame-client-webpack.config.js",
+    "client-build": "webpack --config website-page-frame-webpack.config.js",
     "unit-test": "./bin/test/unitTest.sh",
     "functional-test": "./bin/test/functionalTest.sh",
     "security-test": "./bin/test/securityTest.sh",
-    "test": "npm run unit-test && npm run functional-test"
+    "test": "npm run unit-test && npm run functional-test && npm run security-test"
   },
   "keywords": [
     "electron",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "electron": "^6.0.12",
-    "electron-fetch": "^1.3.0",
+    "electron-fetch": "^1.4.0",
     "jsdom": "^13.2.0",
     "log4js": "^4.0.2",
     "webpack": "^4.41.2",

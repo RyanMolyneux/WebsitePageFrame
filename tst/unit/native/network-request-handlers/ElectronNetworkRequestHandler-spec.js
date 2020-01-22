@@ -1,7 +1,7 @@
 var ElectronNetworkRequestHandler = require("../../../../src/native/network-request-handlers/ElectronNetworkRequestHandler.js").ElectronNetworkRequestHandler;
 var NetworkRequestHandler = require("../../../../src/native/network-request-handlers/NetworkRequestHandler.js").NetworkRequestHandler;
 var ResponsibilityChainBuilder = require("../../../../src/general/builders/ResponsibilityChainBuilder.js").ResponsibilityChainBuilder;
-var Cache = require("../../../../src/native/caches/Cache.js").Cache;
+var Cache = require("../../../../src/native/maps/Cache.js").Cache;
 
 function getMockElectronNetworkRequestHandler() {
 

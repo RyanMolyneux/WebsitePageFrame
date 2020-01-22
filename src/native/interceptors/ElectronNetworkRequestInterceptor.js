@@ -1,5 +1,6 @@
 var NetworkRequestInterceptor = require("./NetworkRequestInterceptor.js").NetworkRequestInterceptor;
 var ElectronNetworkRequestHandler = require("../network-request-handlers/ElectronNetworkRequestHandler.js").ElectronNetworkRequestHandler;
+var HeaderMap = require("../maps/HeaderMap.js").HeaderMap;
 var Request = require("../network-messages/Request.js").Request;
 var PassThrough = require('stream').PassThrough;
 
@@ -14,29 +15,33 @@ ElectronNetworkRequestInterceptor.prototype.constructor = ElectronNetworkRequest
 
 ElectronNetworkRequestInterceptor.prototype.interceptProtocolRequest = function(request, callback) {
 
-    request = new Request(request.url, request.method, request.headers, "");
+    var requestHeaderMap = new HeaderMap();
+
+    requestHeaderMap.fromObject(request.headers);
+
+    request = new Request(request.url, request.method, requestHeaderMap, (request.uploadData)? request.uploadData[0].bytes: null );
 
     this.getNetworkRequestHandler().handleNetworkRequest(request)
                                    .then(function(response) {
 
-                                      var responseBodyStream = new PassThrough();
-
-                                      responseBodyStream.push(response.getBody());
-                                      responseBodyStream.push(null);
+                                      response.getHeaderMap().remove("content-encoding");
 
                                       callback({
-                                          headers: response.getHeaders(),
-                                          data: responseBodyStream,
+                                          headers: response.getHeaderMap().toObject(),
+                                          data: response.getBody(),
                                           statusCode: response.getStatusCode()
                                       });
-                                   });
+                                   }).catch(this.complete);
 
 };
 
-ElectronNetworkRequestInterceptor.prototype.complete = function(hasErrorOccured) {
-    if (hasErrorOccured) {
-        console.error(hasErrorOccured);
+ElectronNetworkRequestInterceptor.prototype.complete = function(errorHasOccured) {
+
+    if (errorHasOccured) {
+
+        console.error(errorHasOccured);
     }
+
 };
 
 exports.ElectronNetworkRequestInterceptor = ElectronNetworkRequestInterceptor;

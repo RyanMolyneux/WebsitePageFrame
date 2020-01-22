@@ -17,7 +17,11 @@ ResponsePreparationChainLink.prototype.checkIfResponsible = function(request, re
 
 ResponsePreparationChainLink.prototype.handleResponsibility = function(response, cache) {
 
-    throw new Error("ResponsePreparationChainLink handleResponsibility, this is a abstract method which should be overridden before being used.");
+    for (var i = 0; i < this.getTaskChain().length; i++) {
+
+        this.getTaskChain()[i].preformTask(response, cache);
+
+    }
 
 };
 

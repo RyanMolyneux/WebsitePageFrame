@@ -44,7 +44,7 @@ Thread.prototype.getState = function() {
 
 Thread.prototype._setState = function(state) {
 
-    if ( this.POSSIBLE_STATES[state] === undefined ) {
+    if ( this.POSSIBLE_STATES[state] == undefined ) {
 
         throw Error("Thread _setState, this method expects the parameter state to contain a constant from POSSIBLE_STATES object.");
 

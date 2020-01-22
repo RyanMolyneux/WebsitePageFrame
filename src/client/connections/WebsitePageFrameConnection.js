@@ -1,7 +1,6 @@
 var Connection = require("../../general/connections/Connection.js").Connection;
 var BrowserThread = require("../threads/BrowserThread.js").BrowserThread;
 var WebsitePageFrameMessageBuilder = require("../builders/WebsitePageFrameMessageBuilder.js").WebsitePageFrameMessageBuilder;
-var ipcRenderer = require("electron").ipcRenderer;
 
 var connectionRetry = function() {
 
@@ -119,7 +118,7 @@ WebsitePageFrameConnection.prototype.closeCurrentConnection = function() {
 
     this.getChildBrowsingContext().location.replace("");
 
-    ipcRenderer.sendSync("clear-cache");
+    ipcRendererClearCache();
 
 };
 
