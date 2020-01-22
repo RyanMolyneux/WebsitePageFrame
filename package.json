@@ -1,7 +1,7 @@
 {
   "name": "website-page-frame",
   "version": "1.0.0",
-  "description": "Component too remove restrictions on iframe & other child window html elements for native devive javascript & to communication between the client window & iframe/child window.",
+  "description": "This library provides a way to allow browser based programs to have cross parent to child window communication through code.",
   "main": "index-native.js",
   "scripts": {
     "client-build": "webpack --config website-page-frame-webpack.config.js",
@@ -17,13 +17,13 @@
     "communication"
   ],
   "author": "Ryan Molyneux",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
     "spectron": "^5.0.0"
   },
   "dependencies": {
-    "electron": "^6.0.12",
     "electron-fetch": "^1.4.0",
+    "electron": "^6.1.5",
     "jsdom": "^13.2.0",
     "log4js": "^4.0.2",
     "webpack": "^4.41.2",
