@@ -46,7 +46,7 @@ exports.general = {
     "TaskChainBuilder": TaskChainBuilder,
     "ChainBuilder": ChainBuilder,
     "Builder": Builder,
-    "Client": Client
+    "Client": Client,
     "Connection": Connection,
     "Map": Map,
     "Thread": Thread,
