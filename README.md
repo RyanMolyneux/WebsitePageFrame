@@ -1,8 +1,7 @@
 
+<h1> Website Page Frame </h1>
 
-# Website Page Frame
-
-## Walkthrough
+<h2 id="Walk_through"> Walkthrough </h2>
 
 This [npm](https://www.npmjs.com/) library gives your code access to a internet browser(in app browser) of its own, an alternative to [WebView](https://developer.chrome.com/apps/tags/webview) and this as you can imagine has a limitless amount of use cases, easiest to think of would be testing of websites another one which is the reason this library was initially developed was to map UI based navigation routes through websites to compact them down for access outside of browsers themselves but apart from those two use cases their may be plenty more just waiting to be discovered.
 
@@ -10,7 +9,7 @@ How exactly does it work though ? well how it works is it alters certain restric
 
 Lastly although this library is compatible with the use of webview element as your nested browsing context it was not designed to be when written, it was designed for use with iframes and as such a lot of the headers that restrict iframes from navigating and displaying internet content freely will not affect webviews and with that being said if you do choose to use webviews instead with this library don't be alarmed if you discover you can navigate across different origins this is simply just something webviews can do unlike iframes and keep in mind when you use iframes you will be restricted from directly navigating across different origins from the nested browsing context for security reasons.
 
-## Table Of Contents
+<h2> Table Of Contents </h2>
 
 1. [Supported Frameworks](#Supported_Frameworks)
 2. [Getting Started](#Getting_Started)
@@ -21,7 +20,7 @@ Lastly although this library is compatible with the use of webview element as yo
     - [Test it out](#Getting_Started_Final_Step)
         - [Opening a website in your in app browser](#Getting_Started_Final_Step_Subsection1)
         - [How to navigate our in app browser between websites](#Getting_Started_Final_Step_Subsection2)
-        - [Interacting through code with in app browser browsers page](#Getting_Started_Final_Step_Subsection3)
+        - [ Interacting through code with in app browser browsers page ](#Getting_Started_Final_Step_Subsection3)
 3. [Advanced Options](#Advanced_Options)
     - [Add custom task to modify in app browser navigation or resource response](#Advanced_Options_Subsection1)
     - [Add custom ResponsePreparationChainLink](#Advanced_Options_Subsection2)
@@ -55,7 +54,7 @@ Lastly although this library is compatible with the use of webview element as yo
         - [ResponseModificationChainLink](#ResponseModificationChainLink)
         - [ResponsePreparationChainLink](#ResponsePreparationChainLink)
         - [WebsitePageFrameNavigationResponsePreparation](#WebsitePageFrameNavigationResponsePreparation)
-    - [WebsitePageFrameResourceResponsePreparation](#WebsitePageFrameResourceResponsePreparation)
+        - [WebsitePageFrameResourceResponsePreparation](#WebsitePageFrameResourceResponsePreparation)
         - [ElectronCacheFactory](#ElectronCacheFactory)
         - [Interceptor](#Interceptor)
         - [NetworkRequestInterceptor](#NetworkRequestInterceptor)
@@ -74,19 +73,18 @@ Lastly although this library is compatible with the use of webview element as yo
         - [ElectronWebsitePageFrame](#ElectronWebsitePageFrame)
 5. [Open Source License](#Open_Source_License)
 
+<h2 id="Supported_Frameworks"> Supported Frameworks </h2>
 
-#### Supported Frameworks
-
- 1. [Electron Version 6](https://github.com/electron/electron/tree/v6.1.7/docs).
- 2. [Electron Version 7](https://github.com/electron/electron/blob/v7.1.10/docs/tutorial/about.md), will be looking into support for this revision, issue is "provisional headers" are only provided to interceptor among other issues that are keeping this library from support for this revision of electron.
+1. [Electron Version 6](https://github.com/electron/electron/tree/v6.1.7/docs).
+2. [Electron Version 7](https://github.com/electron/electron/blob/v7.1.10/docs/tutorial/about.md), will be looking into support for this revision, issue is "provisional headers" are only provided to interceptor among other issues that are keeping this library from support for this revision of electron.
 
 The list although quiet short at the moment could be extended out into others with some work if needs be either officially or by others that choose to build on top of the work that has been done here, the reason as to why more where not added to the list is that this release really focused around ensuring that this library was efficient, extensible and secure.
 
-## Getting Started
+<h2 id="Getting_Started"> Getting Started </h2>
 
 This section makes the assumption that you already have a [Electron application](https://electronjs.org/docs/tutorial/first-app) setup and are ready to start adding this library to its package dependency list.
 
-### Installation
+<h3 id="Getting_Started_Step1"> Installation </h3>
 
 First thing you want to do is add the library to your packages dependency list doing it like so.
 ```
@@ -94,7 +92,7 @@ npm install website-page-frame
 ```
 once you have done this you may move onto the next step.
 
-### Setting up required Electron Preload Script code
+<h3 id="Getting_Started_Step2"> Setting up required Electron Preload Script code </h3>
 
 The below code although simple the function name must be typed exactly as is shown, as it is used by the libraries client side class [WebsitePageFrameConnection](#WebsitePageFrameConnection) currently as communication method between electrons renderer process and main to invoke a function which will clear the cache of all its current information.
 ```javascript
@@ -112,7 +110,7 @@ If you are interested as to why a cache was needed read the below answer to this
 
 So why is a cache needed ? well if you read the [Walk through](#Walk_through) thoroughly you would have noticed it states that the process of identification & modification of the response is re-run from page to page as you navigate the **current website** and what is meant by that is that when you initially open a website in the nested browsing context from the URL the **origin** of interest is extracted and stored in the cache to ensure that every subsequent request made by this nested browsing context can be verified ensuring that it only has access to what it is supposed to have access to, for instance lets say we opened in our nested browsing context "https://malicioussite.com#websitePageFrame" and it in turn attempted to open its own child nested browsing context to lets say Facebook or Twitter in order to take advantage of the restrictions this library removes well without the **Current Nested Browsing Context Origin** how could we in fact tell that these restrictions should not be removed and that's just it as of planning this release their was no safe way found of allowing navigation in the nested browsing context without this, that's not to say that their isn't another way just that another was not found.
 
-### Adding required backend library code to your Electron main.js(or equivalent) file
+<h3 id="Getting_Started_Step3"> Adding required backend library code to your Electron main.js(or equivalent) file </h3>
 
 **NOTE:** Before you get started with this step read on past **Option 1** (Options are given here as their may be support for **HTTP** for this revision in the future.) first to **Basic Resulting main.js file** to get an idea of where the code should be placed in your **Electron main.js** file.
 
@@ -129,10 +127,9 @@ So why is a cache needed ? well if you read the [Walk through](#Walk_through) th
     electronWebsitePageFrame.setupProtocolInterceptors();
 ```
 
-### Basic Resulting main.js file
+<h3 id="Getting_Started_Step4"> Basic Resulting main.js file </h3>
 
 After you have decided and went with one of the following setups your code in **Electron main.js** file should look something like what is below, although here **Option 1** is used.
-
 ```javascript
 // main.js(or equivalent) file.
 var ElectronWebsitePageFrame = require("website-page-frame").ElectronWebsitePageFrame;
@@ -172,11 +169,11 @@ app.on("ready", createWindow);
 
 Once you have something resembling this code in your main.js file move onto the next step.
 
-### Import client side library to your Electron index.html(or equivalent) HTML file
+<h3> Import client side library to your Electron index.html(or equivalent) HTML file </h3>
 
 This step is here to show you how the client side libraries classes should be imported into your apps renderer process in order to make use of them in the Electron GUI.
 
-```
+```html
 <!-- index.html(or equivalent) HTML file -->
 <!DOCTYPE html>
 <html>
@@ -187,9 +184,9 @@ This step is here to show you how the client side libraries classes should be im
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-    <!-- LINUX OR MAC -->
+    <!--- LINUX OR MAC --->
     <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
-    <!-- WINDOWS -->
+    <!-- WINDOWS --->
     <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
 
     </body>
@@ -202,13 +199,13 @@ This step is here to show you how the client side libraries classes should be im
 
 Once you have added this you are pretty much done with the setup and can move onto the last step to test out the in app internet browsing capabilities of this library for yourself.
 
-### Test it out
+<h3 id="Getting_Started_Final_Step"> Test it out </h3>
 
 So this step will show you some of the basics to making use of this library, you should work your way down through each sub step.
 
-#### Opening a website in your Nested Browsing Context
+<h4 id="Getting_Started_Final_Step_Subsection1"> Opening a website in your Nested Browsing Context </h4>
 
-```
+```html
 <!-- index.html(or equivalent) HTML file -->
 <!DOCTYPE html>
 <html>
@@ -219,9 +216,9 @@ So this step will show you some of the basics to making use of this library, you
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-    <!-- LINUX OR MAC -->
+    <!---LINUX OR MAC--->
     <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
-    <!-- WINDOWS -->
+    <!-- WINDOWS --->
     <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
     <script>
 
@@ -246,7 +243,6 @@ So this step will show you some of the basics to making use of this library, you
 
 </html>
 ```
-
 What has been added here is a script element below our library importing script element that we added earlier that demonstrates how to setup your in app browser making use of some of the features from client side classes [WebsitePageFrameClient](#WebsitePageFrameClient) and [WebsitePageFrameConnection](#WebsitePageFrameConnection), note the **childNestedBrowsingContextInitialURL** can be changed to whatever you wish, in this instance what will be displayed when the app runs and opens this website in the nested browsing context can be seen below.
 
 ![Image displaying a Electron app with WebsitePageFrame in app browser setup](https://lh3.googleusercontent.com/GXeaBSdytwP4yH0KMYj_sXicGZwcq9-LdQtPSVQz-Uz6LI5BF7QD-W5mpeEEuVSP5jIwgZV43fUmOg=w1920-h383)
@@ -255,9 +251,9 @@ Navigation between different pages on the same website the in app browser can do
 
 Well how do we navigate our child nested browsing context to different websites then ? well how that is done is demonstrated in the next sub step of testing out this library so go on give it a read and try it out.
 
-#### How to navigate our in app browser between websites
+<h4 id="Getting_Started_Final_Step_Subsection2"> How to navigate our in app browser between websites </h4>
 
-```
+```html
 <!-- index.html(or equivalent) HTML file -->
 <!DOCTYPE html>
 <html>
@@ -268,9 +264,9 @@ Well how do we navigate our child nested browsing context to different websites 
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-    <!-- LINUX OR MAC -->
+    <!--- LINUX OR MAC --->
     <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
-    <!-- WINDOWS -->
+    <!-- WINDOWS --->
     <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
 
     <script>
@@ -304,11 +300,11 @@ Well how do we navigate our child nested browsing context to different websites 
 ```
 The three new lines of code we added are all that is needed in order to navigate your in app browser from one website to the next safely without, all we simple do here is take advantage of more features that the class [WebsitePageFrameConnection](#WebsitePageFrameConnection) has to offer.
 
-#### Interacting through code with in app browsers page
+<h4 id="Getting_Started_Final_Step_Subsection3"> Interacting through code with in app browsers page </h4>
 
 The previous steps have had a look into how to get things setup aswell and opening your first website in your in app browser now this sub step adds additional code which demonstrates how you can interact as the title suggests with the in app browsers page in the code you write.
 
-```
+```html
 <!-- index.html(or equivalent) HTML file -->
 <!DOCTYPE html>
 <html>
@@ -319,10 +315,10 @@ The previous steps have had a look into how to get things setup aswell and openi
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-        <!-- LINUX OR MAC -->
+        <!--- LINUX OR MAC --->
         <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
 
-        <!-- WINDOWS -->
+        <!-- WINDOWS --->
         <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
 
         <script>
@@ -374,20 +370,19 @@ The previous steps have had a look into how to get things setup aswell and openi
     </body>
 </html>
 ```
-
 The code we add here introduces the use of three new client side classes  [BrowserThread](#BrowserThread), [MessageBuilder](#MessageBuilder) and [Action](#Action) in order to create a message in the parent browsing context, send it off to the child browsing context and log some information to the console from the child browsing context making use of argument passed along with the action to be invoked and wait until response is returned to retrieve and display the title of the child browsing context page that was added to the response object(which is postMessageDataReturned.) and sent to the parent browsing context.
 
 These are the basics of what you can do with this library for more go have a read through [Advanced Options](#Advanced_Options) and if you want a better understanding of the classes used here and more go have a read through [Library Classes](#Library_Classes) which mostly organizes the classes out into categories of where they are intended to be used with the exception of [General](#General) which holds classes that could be used in either environment or be extended through sub classes for use in either environment.
 
-## Advanced Options
+<h2 id="Advanced_Options"> Advanced Options </h2>
 
 The advanced options section is for those who wish to dig a little deeper into how exactly the in app browser works behind the scenes as well those who simply wish to add to or alter the existent behavior of this in app browser.
 
-### Add custom task to modify in app browser navigation or resource response
+<h3 id="Advanced_Options_Subsection1"> Add custom task to modify in app browser navigation or resource response </h3>
 
 This subsection here is going to walk through step by step how to add additional response modification tasks to be run each time a new in app browser navigation or resource(resource requests are those for assets such as styles sheets, images that are to be shown or style the HTML page that has already been received.) request is triggered and response for that requests has been received on the backend(outside of renderer process.).
 
-#### 1. Extending ResponseModificationChainLink
+<h4> 1. Extending ResponseModificationChainLink </h4>
 
 So first thing we are going to do is create our class that will extend [ResponseModificationChainLink](#ResponseModificationChainLink) it is recommended to read up on this class by clicking the link before moving on to better understand how it is used, once this classes use is understood the code for the class that we are going to write should look something like what is below differing in size based on the amount of work that task will undertake, but generally each task should have 1 job as you can simply write more and group them together to do bigger jobs.
 
@@ -417,7 +412,7 @@ exports.MyCustomResponseModificationChainLink = MyCustomResponseModificationChai
 
 The above is somewhat what the classes code should look like (**ES5** class syntax is used here.) although again differing is naming & size based on the job that it is that your task should be carrying out, after you have completed this you may move onto the the next step.
 
-#### 2. Adding newly created MyCustomResponseModificationChainLink to in app navigation and resource response modification chains
+<h4> 2. Adding newly created MyCustomResponseModificationChainLink to in app navigation and resource response modification chains </h4>
 
 So for this step we are going to go back to our **main.js file** or equivalent electron app entry script that should look something like this based on what option you chose in the [Getting Started](#Getting_Started) section.
 
@@ -459,7 +454,6 @@ app.on("ready", createWindow);
 ```
 
 And what we are going to do is import the necessary files to add on our newly created [ResponseModificationChainLink](#ResponseModificationChainLink) class descendant to the normal flow of the in app browser like so.
-
 ```javascript
 // main.js(or equivalent) file.
 var ElectronWebsitePageFrame = require("website-page-frame").native.ElectronWebsitePageFrame;
@@ -529,7 +523,7 @@ app.on("ready", createWindow);
 
 This is again is somewhat what your code should now look like now in your **main.js file**, so now your all done from here the task that is to be preformed along side those already added to the task chain will be executed with each in app browser navigation or resource request, just a side note though what should generally be used and needs to be used to set the **taskChain** variable for any other [ResponsibilityChainLink](#ResponsibilityChainLink) is the [TaskChainBuilder](#TaskChainBuilder) it helps to keep the setup process neat and tidy for these classes but why is it not used here then ? well that is because these classes ( [WebsitePageFrameNavigationResponsePreparation](#WebsitePageFrameNavigationResponsePreparation) and [WebsitePageFrameResourceResponsePreparation](#WebsitePageFrameResourceResponsePreparation) ) already have there own preset filled **taskChain** variable and I do not want to mistakenly disrupt that as it these preset tasks are essential to the in app browser so here I modify **taskChain** variable directly so as not to unintentionally add or remove any of the preset tasks.
 
-### Add custom ResponsePreparationChainLink
+<h3 id="Advanced_Options_Subsection2"> Add custom ResponsePreparationChainLink </h3>
 
 Before we get started here it is probably best if you go take a look at [ResponsePreparationChainLink](#ResponsePreparationChainLink) if you have not already to get a better understanding of its use.
 
@@ -537,7 +531,7 @@ So what we are going to do now is run through the steps to create your own  [Res
 
 If you have followed and understand all of the above you should be ready to move on to the first step.
 
-#### 1. Create your own ResponsePreparationChainLink subclass
+<h4> 1. Create your own ResponsePreparationChainLink subclass </h4>
 
 So as I mentioned the class we are extending is [ResponsePreparationChainLink](#ResponsePreparationChainLink) and what your subclass should look like is something like what is shown below differing in length based on what you choose for its use to be.
 ```javascript
@@ -567,7 +561,7 @@ exports.IncomingTrafficCounter = IncomingTrafficCounter;
 
 Although this is simple enough to write their are a few things to keep note of **IncrementCacheTrafficCounter** [ResponseModificationChainLink](#ResponseModificationChainLink) is yet to be written by us and we will do this in the next step, also their is one method we simple override as a catch all of the **responsePreparationChain** of ours by ensuring that it always returns true each time the **HTTPS** traffic comes in that the in app browser is not responsible for this Responsibility Chain Link will be run executing all of its **taskChain** tasks which in our case is just the one which will increment the caches traffic counter each time this [ResponsePreparationChainLink](#ResponsePreparationChainLink) is found to be responsible for incoming traffic, now move on to the next step.
 
-#### 2. Writing IncrementCacheTrafficCounter class
+<h4> 2. Writing IncrementCacheTrafficCounter class <h4>
 
 Here what we are going to do is create a subclass of [ResponseModificationChainLink](#ResponseModificationChainLink) that will on first time running create a key-value pair in the cache for key "IncomingTrafficCounter" and set it to 1 and each subsequent time this classes **preformTask** method is run it will increment the key "IncomingTrafficCounter" value by 1 each time, code for this class can be seen below.
 
@@ -600,7 +594,7 @@ exports.IncrementCacheTrafficCounter = IncrementCacheTrafficCounter;
 
 Now that we have create **IncomingTrafficCounter** [ResponsePreparationChainLink](#ResponsePreparationChainLink) descendant and **IncrementCacheTrafficCounter** [ResponseModificationChainLink](#ResponseModificationChainLink) descendant it is now time we move onto the next and final step of adding them the setup of **main.js file** or equivelant from the [Getting Started](#Getting_Started) section.
 
-#### 3. Adding IncomingTrafficCounter to electron "main.js file" setup or equivalent
+<h4> 3. Adding IncomingTrafficCounter to electron "main.js file" setup or equivalent </h4>
 
 The below code displays somewhat what your setup should look like in your electron **main.js file** or equivelant, again one thing to keep note of is the order of the [ResponsePreparationChainLinks](#ResponsePreparationChainLink) sub classes with the key in app browser classes coming first ensuring that **IncomingTrafficCounter is added to the end of the **responsePreparationChain** [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array).
 
@@ -671,7 +665,7 @@ app.on("ready", createWindow);
 
 and now if you run this and begin to make requests that are related to the in app browser the **responsePreparationChain** will trigger on its last element of the array and the current **IncomingTrafficCounter** will be logged to the console in your terminal or command prompt.
 
-### Other changes that could be made
+<h3> Other changes that could be made </h3>
 
 So this section stands as to point out that their is a lot of room for improvement in this library by listing out what its current limitations are will do just that and that list of current limitations can be seen below, if you feel you can address any of these limitations of this library or others note mentioned here go ahead but ensure to apply the same license when you fork the library.
 
@@ -681,12 +675,12 @@ So this section stands as to point out that their is a lot of room for improveme
 
 3. Framework Support, currently the list of supported frameworks that this library can be used on is limited to just the one.
 
-## Library Classes
+<h2 id="Library_Classes"> Library Classes </h2>
 
-### Client
+<h3 id="Library_Classes_Client"> Client </h3>
 
 ---
-####  WebsitePageFrameMessageBuilder
+<h4 id="WebsitePageFrameMessageBuilder"> WebsitePageFrameMessageBuilder </h4>
 
 this class extends [MessageBuilder](#MessageBuilder) providing no additional member variables or methods, instead its use is during construction of an object of this type it gives predefined values to one of its existent member variables **_messageSignatureGenerator** for use to automatically generate a message signature when building messages to be sent by [WebsitePageFrameClient](#WebsitePageFrameClient) **sendMessage** method.
 
@@ -702,7 +696,7 @@ None.
 
 ---
 
-####  WebsitePageFrameClient
+<h4 id="WebsitePageFrameClient"> WebsitePageFrameClient </h4>
 
 This class extends [Client](#Client).
 
@@ -740,7 +734,7 @@ This class extends [Client](#Client).
 
 ---
 
-#### WebsitePageFramePingClient
+<h4 id="WebsitePageFramePingClient" > WebsitePageFramePingClient </h4>
 
 This class extends [WebsitePageFrameClient](#WebsitePageFrameClient).
 
@@ -772,7 +766,7 @@ This class extends [WebsitePageFrameClient](#WebsitePageFrameClient).
 
 ---
 
-####  WebsitePageFrameConnection
+<h4 id="WebsitePageFrameConnection"> WebsitePageFrameConnection </h4>
 
 This class extends [Connection](#Connection).
 
@@ -821,7 +815,7 @@ This class extends [Connection](#Connection).
 
 ---
 
-####  BrowserThread
+<h4 id="BrowserThread"> BrowserThread</h4>
 This class extends [Thread](#Thread).
 
 ##### Member Variables
@@ -853,11 +847,11 @@ This class extends [Thread](#Thread).
 - **protected** getCodeToBeExecuted(): [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 ---
 
-### General
+<h3 id="Library_Classes_General"> General </h3>
 
 ---
 
-####  Action
+<h4 id="Action"> Action </h4>
 
 ##### Member Variables
 
@@ -885,7 +879,7 @@ This class extends [Thread](#Thread).
 
 ---
 
-####  Builder
+<h4 id="Builder"> Builder </h4>
 
 ##### Member Variables
 
@@ -901,7 +895,7 @@ None.
 
 ---
 
-####  ChainBuilder
+<h4 id="ChainBuilder"> ChainBuilder </h4>
 
 This class extends [Builder](#Builder).
 
@@ -920,7 +914,7 @@ This class extends [Builder](#Builder).
 
 ---
 
-####  TaskChainBuilder
+<h4 id="TaskChainBuilder"> TaskChainBuilder </h4>
 
 This class extends [ChainBuilder](#ChainBuilder).
 
@@ -943,7 +937,7 @@ None.
 
 ---
 
-####  ResponsibilityChainBuilder
+<h4 id="ResponsibilityChainBuilder"> ResponsibilityChainBuilder </h4>
 
 This class extends [ChainBuilder](#ChainBuilder).
 
@@ -965,7 +959,7 @@ None.
 
 ---
 
-####  MessageBuilder
+<h4 id="MessageBuilder"> MessageBuilder </h4>
 
 This class extends [Builder](#Builder).
 
@@ -986,7 +980,7 @@ This class extends [Builder](#Builder).
 
 ---
 
-####  ChainLink
+<h4 id="ChainLink"> ChainLink </h4>
 
 ##### Member Variables
 
@@ -1002,7 +996,7 @@ None.
 
 ---
 
-####  TaskChainLink
+<h4 id="TaskChainLink"> TaskChainLink </h4>
 
 This class extends [ChainLink](#ChainLink).
 
@@ -1020,7 +1014,7 @@ None.
 
 ---
 
-####  ResponsibilityChainLink
+<h4 id="ResponsibilityChainLink"> ResponsibilityChainLink </h4>
 
 This class extends [ChainLink](#ChainLink).
 
@@ -1042,7 +1036,7 @@ This class extends [ChainLink](#ChainLink).
 - **public** **abstract** handleResponsibility(): [void](https://en.wikipedia.org/wiki/Void_type)
 ---
 
-####  Client
+<h4 id="Client"> Client </h4>
 
 ##### Member Variables
 
@@ -1071,7 +1065,7 @@ This class extends [ChainLink](#ChainLink).
 
 ---
 
-####  Connection
+<h4 id="Connection"> Connection </h4>
 
 ##### Member Variables
 - **protected** pingClient: [Client](#Client)
@@ -1100,7 +1094,7 @@ This class extends [ChainLink](#ChainLink).
 
 ---
 
-####  Map
+<h4 id="Map"> Map </h4>
 
 ##### Member Variables
 
@@ -1119,7 +1113,7 @@ None.
 
 ---
 
-####  Message
+<h4 id="Message"> Message </h4>
 
 ##### Member Variables
 
@@ -1143,7 +1137,7 @@ None.
 
 ---
 
-####  Thread
+<h4 id="Thread"> Thread </h4>
 
 ##### Member Variables
 
@@ -1165,11 +1159,11 @@ None.
 - **protected** setCodeToBeExecuted(codeToBeExecuted: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)):  [void](https://en.wikipedia.org/wiki/Void_type)
 ---
 
-### Native </h3>
+<h3 id="Library_Classes_Native"> Native </h3>
 
 ---
 
-####  AddFileSchemaToFrameAnscestorsChainLink
+<h4 id="AddFileSchemaToFrameAnscestorsChainLink"> AddFileSchemaToFrameAnscestorsChainLink </h4>
 
 This class extends [ResponseModificationChainLink](#ResponseModificationChainLink).
 
@@ -1186,7 +1180,7 @@ None.
 
 ---
 
-####  BodyScriptInjectionChainLink
+<h4 id="BodyScriptInjectionChainLink"> BodyScriptInjectionChainLink </h4>
 
 This class extends [ResponseModficationChainLink](#ResponseModficationChainLink).
 
@@ -1206,7 +1200,7 @@ This class extends [ResponseModficationChainLink](#ResponseModficationChainLink)
 
 ---
 
-####  RemoveXFrameOptionsChainLink
+<h4 id="RemoveXFrameOptionsChainLink"> RemoveXFrameOptionsChainLink </h4>
 
 This class extends [ResponseModficationChainLink](#ResponseModficationChainLink).
 
@@ -1224,7 +1218,7 @@ None.
 
 ---
 
-####  ResponseModificationChainLink
+<h4 id="ResponseModificationChainLink"> ResponseModificationChainLink </h4>
 
 This class extends [TaskChainLink](#TaskChainLink).
 
@@ -1242,7 +1236,7 @@ None.
 
 ---
 
-####  ResponsePreparationChainLink
+<h4 id="ResponsePreparationChainLink"> ResponsePreparationChainLink </h4>
 
 This class extends [ResponsibilityChainLink](#ResponsibilityChainLink)
 
@@ -1264,7 +1258,7 @@ None.
 
 ---
 
-####  WebsitePageFrameNavigationResponsePreparation
+<h4 id="WebsitePageFrameNavigationResponsePreparation"> WebsitePageFrameNavigationResponsePreparation </h4>
 
 This class extends [ResponseModificationChainLink](#ResponseModificationChainLink).
 
@@ -1287,7 +1281,7 @@ This class extends [ResponseModificationChainLink](#ResponseModificationChainLin
 
 ---
 
-####  WebsitePageFrameResourceResponsePreparation
+<h4 id="WebsitePageFrameResourceResponsePreparation"> WebsitePageFrameResourceResponsePreparation </h4>
 
 This class extends [ResponsePreparationChainLink](#ResponsePreparationChainLink).
 
@@ -1310,7 +1304,7 @@ None.
 
 ---
 
-####  ElectronCacheFactory
+<h4 id="ElectronCacheFactory"> ElectronCacheFactory </h4>
 
 ##### Member Variables
 
@@ -1327,7 +1321,7 @@ None.
 
 ---
 
-####  Interceptor
+<h4 id="Interceptor"> Interceptor </h4>
 
 ##### Member Variables
 
@@ -1345,7 +1339,7 @@ None.
 
 ---
 
-####  NetworkRequestInterceptor
+<h4 id="NetworkRequestInterceptor"> NetworkRequestInterceptor </h4>
 
 This class extends [Interceptor](#Interceptor).
 
@@ -1369,7 +1363,7 @@ This class extends [Interceptor](#Interceptor).
 - **public** **abstract** interceptProtocolRequest(): [void](https://en.wikipedia.org/wiki/Void_type)
 ---
 
-####  ElectronNetworkRequestInterceptor
+<h4 id="ElectronNetworkRequestInterceptor"> ElectronNetworkRequestInterceptor </h4>
 
 This class extends [NetworkRequestInterceptor](#NetworkRequestInterceptor).
 
@@ -1396,7 +1390,7 @@ None.
 
 ---
 
-####  Cache
+<h4 id="Cache"> Cache </h4>
 
 This class extends [Map](#Map).
 
@@ -1420,7 +1414,7 @@ None.
 
 ---
 
-####  HeaderMap
+<h4 id="HeaderMap"> HeaderMap </h4>
 
 This class extends [Map](#Map).
 
@@ -1448,7 +1442,7 @@ This class extends [Map](#Map).
 
 ---
 
-####  NetworkMessage
+<h4 id="NetworkMessage"> NetworkMessage </h4>
 
 ##### Member Variables
 
@@ -1469,7 +1463,7 @@ This class extends [Map](#Map).
 
 ---
 
-####  Request
+<h4 id="Request"> Request </h4>
 
 This class extends [NetworkMessage](#NetworkMessage).
 
@@ -1499,7 +1493,7 @@ This class extends [NetworkMessage](#NetworkMessage).
 
 ---
 
-####  Response
+<h4 id="Response"> Response </h4>
 
 This class extends [NetworkMessage](#NetworkMessage).
 
@@ -1525,7 +1519,7 @@ This class extends [NetworkMessage](#NetworkMessage).
 
 ---
 
-####  NetworkRequestHandler
+<h4 id="NetworkRequestHandler"> NetworkRequestHandler </h4>
 
 ##### Member Variables
 
@@ -1552,7 +1546,7 @@ This class extends [NetworkMessage](#NetworkMessage).
 
 ---
 
-####  ElectronNetworkRequestHandler
+<h4 id="ElectronNetworkRequestHandler"> ElectronNetworkRequestHandler </h4>
 
 This class extends [NetworkRequestHandler](#NetworkRequestHandler).
 
@@ -1587,7 +1581,7 @@ This class extends [NetworkRequestHandler](#NetworkRequestHandler).
 
 ---
 
-####  Protocol
+<h4 id="Protocol"> Protocol </h4>
 
 ##### Member Variables
 
@@ -1604,7 +1598,7 @@ This class extends [NetworkRequestHandler](#NetworkRequestHandler).
 
 ---
 
-####  Script
+<h4 id="Script"> Script </h4>
 
 ##### Member Variables
 
@@ -1621,7 +1615,7 @@ This class extends [NetworkRequestHandler](#NetworkRequestHandler).
 
 ---
 
-####  WebsitePageFrameCrossOriginMessagingScript
+<h4 id="WebsitePageFrameCrossOriginMessagingScript"> WebsitePageFrameCrossOriginMessagingScript </h4>
 
 This class extends [Script](#Script).
 
@@ -1640,7 +1634,7 @@ None.
 
 ---
 
-####  WebsitePageFrame
+<h4 id="WebsitePageFrame"> WebsitePageFrame </h4>
 
 ##### Member Variables
 
@@ -1660,7 +1654,7 @@ None.
 
 ---
 
-####  ElectronWebsitePageFrame
+<h4 id="ElectronWebsitePageFrame"> ElectronWebsitePageFrame </h4>
 
 This class extends [WebsitePageFrame](#WebsitePageFrame).
 
@@ -1686,7 +1680,7 @@ None.
 ---
 
 
-## Open Source License
+<h2 id="Open_Source_License"> Open Source License </h2>
 
 ```javascript
 /*
