@@ -1,3 +1,4 @@
+
 <h1> Website Page Frame </h1>
 
 <h2 id="Walk_through"> Walkthrough </h2>
@@ -70,7 +71,7 @@ Lastly although this library is compatible with the use of webview element as yo
         - [WebsitePageFrameCrossOriginMessagingScript](#WebsitePageFrameCrossOriginMessagingScript)
         - [WebsitePageFrame](#WebsitePageFrame)
         - [ElectronWebsitePageFrame](#ElectronWebsitePageFrame)
-5. [Open Source License Applied](#Open_Source_License)
+5. [Open Source License](#Open_Source_License)
 
 <h2 id="Supported_Frameworks"> Supported Frameworks </h2>
 
@@ -1679,7 +1680,7 @@ None.
 ---
 
 
-<h2 id="Open_Source_License"> Open Source License Applied </h2>
+<h2 id="Open_Source_License"> Open Source License </h2>
 
 ```javascript
 /*
