@@ -115,7 +115,7 @@ So why is a cache needed ? well if you read the [Walk through](#Walk_through) th
 
 **NOTE:** Before you get started with this step read on past **Option 1** (Options are given here as their may be support for **HTTP** for this revision in the future.) first to **Basic Resulting main.js file** to get an idea of where the code should be placed in your **Electron main.js** file.
 
-<h4> Option 1 (HTTPS). </h4> 
+<h4> Option 1 (HTTPS). </h4>
 
 ```javascript
 // main.js(or equivalent) file.
@@ -186,9 +186,9 @@ This step is here to show you how the client side libraries classes should be im
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-    <!--- LINUX OR MAC --->
+    <!-- LINUX OR MAC -->
     <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
-    <!-- WINDOWS --->
+    <!-- WINDOWS -->
     <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
 
     </body>
@@ -1705,4 +1705,3 @@ None.
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ```
-
