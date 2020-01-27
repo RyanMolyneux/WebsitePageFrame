@@ -114,7 +114,7 @@ So why is a cache needed ? well if you read the [Walk through](#Walk_through) th
 
 **NOTE:** Before you get started with this step read on past **Option 1** (Options are given here as their may be support for **HTTP** for this revision in the future.) first to **Basic Resulting main.js file** to get an idea of where the code should be placed in your **Electron main.js** file.
 
-<h4> Option 1 (HTTPS). </h4>
+#### Option 1 (HTTPS).
 
 ```javascript
 // main.js(or equivalent) file.
