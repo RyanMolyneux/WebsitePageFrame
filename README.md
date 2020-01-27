@@ -55,7 +55,7 @@ Lastly although this library is compatible with the use of webview element as yo
         - [ResponseModificationChainLink](#ResponseModificationChainLink)
         - [ResponsePreparationChainLink](#ResponsePreparationChainLink)
         - [WebsitePageFrameNavigationResponsePreparation](#WebsitePageFrameNavigationResponsePreparation)
-        - [WebsitePageFrameResourceResponsePreparation](#WebsitePageFrameResourceResponsePreparation)
+    - [WebsitePageFrameResourceResponsePreparation](#WebsitePageFrameResourceResponsePreparation)
         - [ElectronCacheFactory](#ElectronCacheFactory)
         - [Interceptor](#Interceptor)
         - [NetworkRequestInterceptor](#NetworkRequestInterceptor)
@@ -74,10 +74,11 @@ Lastly although this library is compatible with the use of webview element as yo
         - [ElectronWebsitePageFrame](#ElectronWebsitePageFrame)
 5. [Open Source License](#Open_Source_License)
 
-<h2 id="Supported_Frameworks"> Supported Frameworks </h2>
 
-1. [Electron Version 6](https://github.com/electron/electron/tree/v6.1.7/docs).
-2. [Electron Version 7](https://github.com/electron/electron/blob/v7.1.10/docs/tutorial/about.md), will be looking into support for this revision, issue is "provisional headers" are only provided to interceptor among other issues that are keeping this library from support for this revision of electron.
+#### Supported Frameworks
+
+ 1. [Electron Version 6](https://github.com/electron/electron/tree/v6.1.7/docs).
+ 2. [Electron Version 7](https://github.com/electron/electron/blob/v7.1.10/docs/tutorial/about.md), will be looking into support for this revision, issue is "provisional headers" are only provided to interceptor among other issues that are keeping this library from support for this revision of electron.
 
 The list although quiet short at the moment could be extended out into others with some work if needs be either officially or by others that choose to build on top of the work that has been done here, the reason as to why more where not added to the list is that this release really focused around ensuring that this library was efficient, extensible and secure.
 
