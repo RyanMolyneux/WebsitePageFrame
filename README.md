@@ -1,4 +1,5 @@
 
+
 <h1> Website Page Frame </h1>
 
 <h2 id="Walk_through"> Walkthrough </h2>
@@ -20,7 +21,7 @@ Lastly although this library is compatible with the use of webview element as yo
     - [Test it out](#Getting_Started_Final_Step)
         - [Opening a website in your in app browser](#Getting_Started_Final_Step_Subsection1)
         - [How to navigate our in app browser between websites](#Getting_Started_Final_Step_Subsection2)
-        - [ Interacting through code with in app browser browsers page ](#Getting_Started_Final_Step_Subsection3)
+        - [Interacting through code with in app browser browsers page](#Getting_Started_Final_Step_Subsection3)
 3. [Advanced Options](#Advanced_Options)
     - [Add custom task to modify in app browser navigation or resource response](#Advanced_Options_Subsection1)
     - [Add custom ResponsePreparationChainLink](#Advanced_Options_Subsection2)
@@ -114,7 +115,7 @@ So why is a cache needed ? well if you read the [Walk through](#Walk_through) th
 
 **NOTE:** Before you get started with this step read on past **Option 1** (Options are given here as their may be support for **HTTP** for this revision in the future.) first to **Basic Resulting main.js file** to get an idea of where the code should be placed in your **Electron main.js** file.
 
-#### Option 1 (HTTPS).
+<h4> Option 1 (HTTPS). </h4> 
 
 ```javascript
 // main.js(or equivalent) file.
@@ -130,6 +131,7 @@ So why is a cache needed ? well if you read the [Walk through](#Walk_through) th
 <h3 id="Getting_Started_Step4"> Basic Resulting main.js file </h3>
 
 After you have decided and went with one of the following setups your code in **Electron main.js** file should look something like what is below, although here **Option 1** is used.
+
 ```javascript
 // main.js(or equivalent) file.
 var ElectronWebsitePageFrame = require("website-page-frame").ElectronWebsitePageFrame;
@@ -216,9 +218,9 @@ So this step will show you some of the basics to making use of this library, you
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-    <!---LINUX OR MAC--->
+    <!-- LINUX OR MAC -->
     <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
-    <!-- WINDOWS --->
+    <!-- WINDOWS -->
     <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
     <script>
 
@@ -264,9 +266,9 @@ Well how do we navigate our child nested browsing context to different websites 
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-    <!--- LINUX OR MAC --->
+    <!-- LINUX OR MAC -->
     <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
-    <!-- WINDOWS --->
+    <!-- WINDOWS -->
     <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
 
     <script>
@@ -315,10 +317,10 @@ The previous steps have had a look into how to get things setup aswell and openi
         <h1> My First App </h1>
         <iframe src="" id="yourNestedBrowsingContext" width="1000px" height="1000px" sanbox="allow-forms allows-scripts allows-same-origin"></iframe>
 
-        <!--- LINUX OR MAC --->
+        <!-- LINUX OR MAC -->
         <script src="./node_modules/website-page-frame/dist/client-bundle.js"></script>
 
-        <!-- WINDOWS --->
+        <!-- WINDOWS -->
         <script src=".\node_modules\website-page-frame\dist\client-bundle.js"></script>
 
         <script>
@@ -370,6 +372,7 @@ The previous steps have had a look into how to get things setup aswell and openi
     </body>
 </html>
 ```
+
 The code we add here introduces the use of three new client side classes  [BrowserThread](#BrowserThread), [MessageBuilder](#MessageBuilder) and [Action](#Action) in order to create a message in the parent browsing context, send it off to the child browsing context and log some information to the console from the child browsing context making use of argument passed along with the action to be invoked and wait until response is returned to retrieve and display the title of the child browsing context page that was added to the response object(which is postMessageDataReturned.) and sent to the parent browsing context.
 
 These are the basics of what you can do with this library for more go have a read through [Advanced Options](#Advanced_Options) and if you want a better understanding of the classes used here and more go have a read through [Library Classes](#Library_Classes) which mostly organizes the classes out into categories of where they are intended to be used with the exception of [General](#General) which holds classes that could be used in either environment or be extended through sub classes for use in either environment.
@@ -454,6 +457,7 @@ app.on("ready", createWindow);
 ```
 
 And what we are going to do is import the necessary files to add on our newly created [ResponseModificationChainLink](#ResponseModificationChainLink) class descendant to the normal flow of the in app browser like so.
+
 ```javascript
 // main.js(or equivalent) file.
 var ElectronWebsitePageFrame = require("website-page-frame").native.ElectronWebsitePageFrame;
@@ -561,7 +565,7 @@ exports.IncomingTrafficCounter = IncomingTrafficCounter;
 
 Although this is simple enough to write their are a few things to keep note of **IncrementCacheTrafficCounter** [ResponseModificationChainLink](#ResponseModificationChainLink) is yet to be written by us and we will do this in the next step, also their is one method we simple override as a catch all of the **responsePreparationChain** of ours by ensuring that it always returns true each time the **HTTPS** traffic comes in that the in app browser is not responsible for this Responsibility Chain Link will be run executing all of its **taskChain** tasks which in our case is just the one which will increment the caches traffic counter each time this [ResponsePreparationChainLink](#ResponsePreparationChainLink) is found to be responsible for incoming traffic, now move on to the next step.
 
-<h4> 2. Writing IncrementCacheTrafficCounter class <h4>
+<h4> 2. Writing IncrementCacheTrafficCounter class </h4>
 
 Here what we are going to do is create a subclass of [ResponseModificationChainLink](#ResponseModificationChainLink) that will on first time running create a key-value pair in the cache for key "IncomingTrafficCounter" and set it to 1 and each subsequent time this classes **preformTask** method is run it will increment the key "IncomingTrafficCounter" value by 1 each time, code for this class can be seen below.
 
@@ -665,7 +669,7 @@ app.on("ready", createWindow);
 
 and now if you run this and begin to make requests that are related to the in app browser the **responsePreparationChain** will trigger on its last element of the array and the current **IncomingTrafficCounter** will be logged to the console in your terminal or command prompt.
 
-<h3> Other changes that could be made </h3>
+<h3 id="Advanced_Options_Subsection3"> Other changes that could be made </h3>
 
 So this section stands as to point out that their is a lot of room for improvement in this library by listing out what its current limitations are will do just that and that list of current limitations can be seen below, if you feel you can address any of these limitations of this library or others note mentioned here go ahead but ensure to apply the same license when you fork the library.
 
@@ -1701,3 +1705,4 @@ None.
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ```
+
