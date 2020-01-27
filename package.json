@@ -1,6 +1,6 @@
 {
   "name": "website-page-frame",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "This library provides a way to allow browser based programs to have cross parent to child window communication through code.",
   "main": "index-native.js",
   "scripts": {
