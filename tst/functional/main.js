@@ -44,12 +44,6 @@ function createWindow() {
     electronWebsitePageFrame.setupProtocolInterceptors();
 
 
-    session.defaultSession.webRequest.onBeforeSendHeaders({ urls: []}, (details, callback) => {
-      console.dir(details);
-      callback({ requestHeaders: details.requestHeaders })
-    })
-
-
     appWindow.on("closed", () => {
         appWindow = null;
     });

@@ -43,13 +43,10 @@ function ElectronWebsitePageFrame(interceptors) {
                                                                                       defaultCache,
                                                                                       defaultResponsePreparationChainBuilder );
 
-        var defaultEmptyElectronHttpRequestInterceptor = new ElectronNetworkRequestInterceptor( new Protocol("http"),
-                                                                                                new ElectronNetworkRequestHandler(session.defaultSession) );
-
         var defaultElectronHttpsRequestInterceptor = new ElectronNetworkRequestInterceptor( new Protocol("https"),
                                                                                             defaultElectronNetworkRequestHandler );
 
-        interceptors = [ defaultEmptyElectronHttpRequestInterceptor, defaultElectronHttpsRequestInterceptor ];
+        interceptors = [ defaultElectronHttpsRequestInterceptor ];
 
     }
 

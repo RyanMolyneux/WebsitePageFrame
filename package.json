@@ -19,14 +19,16 @@
   "author": "Ryan Molyneux",
   "license": "GPL-3.0",
   "devDependencies": {
+    "electron": "^6.1.7",
+    "log4js": "^4.0.2",
     "spectron": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RyanMolyneux/WebsitePageFrame.git"
   },
   "dependencies": {
     "electron-fetch": "^1.4.0",
-    "electron": "^6.1.5",
-    "jsdom": "^13.2.0",
-    "log4js": "^4.0.2",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "jsdom": "^13.2.0"
   }
 }

@@ -37,7 +37,7 @@ ElectronNetworkRequestInterceptor.prototype.interceptProtocolRequest = function(
 
     requestHeaderMap.fromObject(request.headers);
 
-    request = new Request(request.url, request.method, requestHeaderMap, (request.uploadData)? request.uploadData[0].bytes: null );
+    request = new Request(request.url, request.method, requestHeaderMap, (request.uploadData && request.uploadData.length > 0)? request.uploadData[0].bytes: null );
 
     this.getNetworkRequestHandler().handleNetworkRequest(request)
                                    .then(function(response) {
