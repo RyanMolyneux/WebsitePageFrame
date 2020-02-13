@@ -20,13 +20,11 @@ var MessageBuilder = require("../../general/builders/MessageBuilder.js").Message
 
 function WebsitePageFrameMessageBuilder() {
 
-    var messageSignatureGenerator = function() {
+    MessageBuilder.call(this, function() {
 
         return window.crypto.getRandomValues(new Uint32Array(1))[0];
 
-    };
-
-    MessageBuilder.call(this, messageSignatureGenerator);
+    });
 
 }
 

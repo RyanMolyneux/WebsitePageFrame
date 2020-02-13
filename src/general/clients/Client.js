@@ -18,7 +18,7 @@
 
 function setClientConnection(clientConnection) {
 
-    if ( !(clientConnection instanceof Connection) && clientConnection !== null ) {
+    if ( !(clientConnection instanceof Connection || clientConnection === null) ) {
 
         throw new TypeError("Client setClientConnection, parameter clientConnection expected to be instanceof Connection or null.");
 
@@ -125,7 +125,7 @@ Client.prototype.getResponse = function() {
 
 Client.prototype._setResponse = function(response) {
 
-    if ( !(response instanceof Object) && response !== null) {
+    if ( !(response instanceof Object || response === null) ) {
 
         throw new TypeError("Client _setResponse, parameter response expected to be instanceof Object or null.");
 

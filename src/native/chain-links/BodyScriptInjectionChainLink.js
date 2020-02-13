@@ -35,6 +35,7 @@ function BodyScriptInjectionChainLink(scriptsToBeInjected) {
 BodyScriptInjectionChainLink.prototype = Object.create(ResponseModificationChainLink.prototype);
 BodyScriptInjectionChainLink.prototype.constructor = BodyScriptInjectionChainLink;
 
+
 BodyScriptInjectionChainLink.prototype.preformTask = function(response, cache) {
 
     if ( response instanceof Response ) {
@@ -70,7 +71,7 @@ BodyScriptInjectionChainLink.prototype.setScriptsToBeInjected = function(scripts
 
         throw new TypeError("BodyScriptInjectionChainLink setScriptsToBeInjected, parameter scripts expected to be instanceof Array.");
 
-    } else if ( this._arrayIsEmpyOrOnlyContainingScripts(scripts) === false ) {
+    } else if ( this._arrayDoesNotOnlyContainScripts(scripts) ) {
 
         throw new TypeError( "BodyScriptInjectionChainLink setScriptsToBeInjected, parameter scripts Array is expected to only contain "
                            + "instances of class Script or any of its descendants.");
@@ -83,19 +84,19 @@ BodyScriptInjectionChainLink.prototype.setScriptsToBeInjected = function(scripts
 
 };
 
-BodyScriptInjectionChainLink.prototype._arrayIsEmpyOrOnlyContainingScripts = function(scripts) {
+BodyScriptInjectionChainLink.prototype._arrayDoesNotOnlyContainScripts = function(scripts) {
 
     for (var i = 0; i < scripts.length; i++) {
 
         if ( !(scripts[i] instanceof Script) ) {
 
-            return false;
+            return true;
 
         }
 
     }
 
-    return true;
+    return false;
 
 }
 

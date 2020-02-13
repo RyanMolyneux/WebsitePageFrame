@@ -35,9 +35,11 @@ ResponsePreparationChainLink.prototype.checkIfResponsible = function(request, re
 
 ResponsePreparationChainLink.prototype.handleResponsibility = function(response, cache) {
 
-    for (var i = 0; i < this.getTaskChain().length; i++) {
+    var tempReferenceToOfTaskChain = this.getTaskChain();
 
-        this.getTaskChain()[i].preformTask(response, cache);
+    for (var i = 0; i < tempReferenceToOfTaskChain.length; i++) {
+
+        tempReferenceToOfTaskChain[i].preformTask(response, cache);
 
     }
 

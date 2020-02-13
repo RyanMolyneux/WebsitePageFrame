@@ -22,6 +22,8 @@ function Cache() {
 
     Map.call(this);
 
+    this._store = {};
+
 }
 
 Cache.prototype = Object.create(Map.prototype);
@@ -31,7 +33,7 @@ Cache.prototype.set = function(key, value) {
 
     var keyInPreparedForm = this._prepareValidKey(key);
 
-    this[keyInPreparedForm] = value;
+    this._store[keyInPreparedForm] = value;
 
 };
 
@@ -39,7 +41,7 @@ Cache.prototype.get = function(key) {
 
     var keyInPreparedForm = this._prepareValidKey(key);
 
-    return this[keyInPreparedForm];
+    return this._store[keyInPreparedForm];
 
 };
 
@@ -47,7 +49,7 @@ Cache.prototype.has = function(key) {
 
     var keyInPreparedForm = this._prepareValidKey(key);
 
-    return ( this[keyInPreparedForm] !== undefined );
+    return ( keyInPreparedForm in this._store );
 
 };
 
@@ -55,17 +57,15 @@ Cache.prototype.remove = function(key) {
 
     var keyInPreparedForm = this._prepareValidKey(key);
 
-    delete this[keyInPreparedForm];
+    delete this._store[keyInPreparedForm];
 
 };
 
 Cache.prototype.clear = function() {
 
-    var cacheKeys = Object.keys(this);
+    for (var cacheKey in this._store) {
 
-    for (var i = 0; i < cacheKeys.length; i++) {
-
-        delete this[ cacheKeys[i] ];
+        delete this._store[cacheKey];
 
     }
 

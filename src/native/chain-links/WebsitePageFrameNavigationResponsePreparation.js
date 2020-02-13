@@ -42,21 +42,23 @@ function WebsitePageFrameNavigationResponsePreparation() {
 WebsitePageFrameNavigationResponsePreparation.prototype = Object.create(ResponsePreparationChainLink.prototype);
 WebsitePageFrameNavigationResponsePreparation.prototype.constructor = WebsitePageFrameNavigationResponsePreparation;
 
+
 WebsitePageFrameNavigationResponsePreparation.prototype.checkIfResponsible = function(request, response, cache) {
 
     var isResponsible = false;
-    var contentType = response.getHeaderMap().get("content-type");
+    var responseContentType = response.getHeaderMap().get("content-type");
 
     if ( (response.getStatusCode() === 200 || response.getStatusCode() === 404)
-      && contentType != undefined
-      && contentType.includes("text/html")) {
+      && responseContentType != undefined
+      && responseContentType.includes("text/html")) {
 
-        var requestUrlSplit = request.getUrl().split("/", 3);
-        var requestBaseUrl = requestUrlSplit[0] + "//" + requestUrlSplit[2];
+        var requestUrl = request.getUrl();
+        var lastIndexOfBaseUrl = requestUrl.search(new RegExp("[a-zA-Z0-9]/(.*)"));
+        var requestBaseUrl = (lastIndexOfBaseUrl < 0)? requestUrl: requestUrl.substring(0, lastIndexOfBaseUrl+1);
         var websitePageFrameCurrentOrigin = cache.get("website-page-frame-origin");
         var requestSecFetchMode = request.getHeaderMap().get("Sec-Fetch-Mode");
 
-        if ( request.getUrl().includes(this._WEBSITE_URL_UNIQUE_FRAGMENT)
+        if ( requestUrl.includes(this._WEBSITE_URL_UNIQUE_FRAGMENT)
           && websitePageFrameCurrentOrigin === undefined ) {
 
             cache.set("website-page-frame-origin", requestBaseUrl.replace("#websitePageFrame", "") );
