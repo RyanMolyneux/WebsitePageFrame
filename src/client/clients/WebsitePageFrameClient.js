@@ -22,7 +22,7 @@ var Message = require("../../general/messages/Message.js").Message;
 
 function setClientConnection(websitePageFrameClientConnection) {
 
-    if ( !(websitePageFrameClientConnection instanceof WebsitePageFrameConnection) && websitePageFrameClientConnection !== null) {
+    if ( !(websitePageFrameClientConnection instanceof WebsitePageFrameConnection || websitePageFrameClientConnection === null) ) {
 
         throw new TypeError( "WebsitePageFrameClient setClientConnection, parameter websitePageFrameClientConnection expected to be instanceof "
                            + "WebsitePageFrameConnection.");
@@ -37,7 +37,7 @@ function setClientConnection(websitePageFrameClientConnection) {
 
 function _setPreviousMessageSignature(previousMessageSignature) {
 
-    if ( typeof(previousMessageSignature) !== "number" && previousMessageSignature !== null ) {
+    if ( !(typeof(previousMessageSignature) === "number" || previousMessageSignature === null) ) {
 
         throw new TypeError( "WebsitePageFrameClient _setPreviousMessageSignature, parameter previousMessageSignature expected to be typeof number "
                            + "or null but found " + (typeof(previousMessageSignature)) + ".");
@@ -119,7 +119,7 @@ WebsitePageFrameClient.prototype.sendMessage = function(message) {
 
     } else {
 
-        throw new Error("WebsitePageFrameClient sendMessage, sendMessagePreChecks returned false meaning that message is not able to be sent for.");
+        throw new Error("WebsitePageFrameClient sendMessage, sendMessagePreChecks returned false meaning that message was not able to be sent.");
 
     }
 
@@ -127,7 +127,7 @@ WebsitePageFrameClient.prototype.sendMessage = function(message) {
 
 WebsitePageFrameClient.prototype.sendMessagePreChecks = function(message) {
 
-    return (message instanceof Message) && this.isConnectionReady() && this._previousMessageSignature === null;
+    return (message instanceof Message) && this._previousMessageSignature === null && this.isConnectionReady() ;
 
 };
 
