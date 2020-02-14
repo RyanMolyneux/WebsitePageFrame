@@ -37,7 +37,7 @@ function setClientConnection(websitePageFrameClientConnection) {
 
 function _setPreviousMessageSignature(previousMessageSignature) {
 
-    if ( !(typeof(previousMessageSignature) === "number" || previousMessageSignature === null) ) {
+    if ( typeof(previousMessageSignature) !== "number" && previousMessageSignature !== null ) {
 
         throw new TypeError( "WebsitePageFrameClient _setPreviousMessageSignature, parameter previousMessageSignature expected to be typeof number "
                            + "or null but found " + (typeof(previousMessageSignature)) + ".");

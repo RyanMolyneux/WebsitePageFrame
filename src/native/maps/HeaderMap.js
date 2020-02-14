@@ -49,7 +49,7 @@ HeaderMap.prototype.has = function(header) {
 
     header = this._prepareValidKey(header);
 
-    return ( this._headers[header] !== undefined && this._headers[header] instanceof Array );
+    return ( header in this._headers );
 
 };
 
